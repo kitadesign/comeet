@@ -1,0 +1,33 @@
+<?php require_once( TEMPLATES_DIR . '_header.html' ); ?>
+<div id="viewport">
+	<div id="pageContent">
+		<header class="siteHeader">
+			<div class="local-header">
+				<h1>Comeet</h1>
+			</div>
+		</header>
+		<div id="wrapper">
+			<div class="main">
+				<div id="scroller">
+					<section class="hr changeMarginBottom50">
+						<div class="formBox center">
+							<div class="fb-login-button"><a href="<?php echo($facebook_login_url); ?>"><img src="/shared/images/fb_login.gif" width="154" height="22" /></a></div>
+						<!-- /formBox --></div>
+						<div class="textboxCtrl_010">
+							<p>現在登録されている推奨取締役人数：<?php echo($count); ?>人</p>
+						<!-- /textboxCtrl_010 --></div>
+					</section>
+
+					<section>
+						<div class="textboxCtrl_010">
+							<p>推奨取締役に選ばれているあなたの友人</p>
+						<!-- /textboxCtrl_010 --></div>
+					</section>
+					
+				<?php require_once( TEMPLATES_DIR . '_footer_1.html' ); ?>
+				<!-- /scroller --></div>
+			<!-- /main --></div>
+		<!-- /wrapper --></div>
+	<!-- /pageContent --></div>
+<!-- /viewport --></div>
+<?php require_once( TEMPLATES_DIR . '_footer.html' ); ?>

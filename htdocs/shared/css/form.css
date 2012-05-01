@@ -1,0 +1,243 @@
+@charset 'utf-8';
+
+/* contactForm
+-------------------------------------------------- */
+
+.contactForm {
+	padding: 0 10px;
+	margin: 0 0 10px;
+}
+
+.contactForm dl {
+	margin: 0 0 20px;
+}
+
+.contactForm dt {
+	font-weight: bold;
+}
+
+.contactForm dd {
+	margin: 0 0 10px;
+}
+
+.require {
+	padding: 3px;
+	vertical-align: text-bottom;
+	color: #ffffff;
+	background-color: #cc0000;
+	font-weight: bold;
+	font-size: 11px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+/* contactCall
+-------------------------------------------------- */
+
+.contactCall {
+	margin: 10px 0 20px 0;
+	text-align: center;
+}
+
+.contactCall dl {
+	margin: 0 0 10px;
+}
+
+.contactCall dt,
+.contactCall dd {
+	display: inline; 
+}
+
+.contactCall time {
+	margin: 0 2px;
+}
+
+.call a {
+	padding: 5px 10px;
+	border: 1px solid #ffffff;
+	display: inline-block;
+	background-color: #006699;
+	background: -webkit-gradient(linear, left top, left bottom, from(#66cc00), color-stop(48%, #66b400), color-stop(52%, #66a700), to(#669900));
+	text-align: center;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 0 3px #333333;
+	box-shadow: 0 0 3px #333333;
+}
+
+/* errorBox
+-------------------------------------------------- */
+
+.errorBox {
+	width: 90%;
+	padding: 16px 15px 13px;
+	margin: 10px auto;
+	color: #e50012;
+	text-align: center;
+	font-weight: bold;
+	background: #ffe3e6;
+	border: 1px solid #e50012;
+}
+
+/* textarea
+-------------------------------------------------- */
+
+textarea {
+	margin: 10px auto;
+	padding: 0 10px;
+	width: 90%;
+	font-size: 14px;
+}
+
+/* select
+-------------------------------------------------- */
+
+select {
+	margin: 10px auto;
+	padding: 0 10px;
+	width: 90%;
+	font-size: 14px;
+}
+
+/* input
+-------------------------------------------------- */
+
+.main .textboxCtrl_010 {
+	margin: 10px auto;
+	padding: 0 10px;
+}
+
+input {
+	padding: 5px;
+	margin: 0 auto 10px;
+}
+
+input[type="email"],
+input[type="url"] {
+	width: 90%;
+}
+
+input[type="tell"] {
+	width: 25%;
+}
+
+/*input[type="text"] {
+	width: 90%;
+}*/
+
+input[type="radio"] {
+	width: auto;
+	font-size: 18px;
+}
+
+input[type="checkbox"] {
+	padding: 2px;
+	width: auto;
+	font-size: 18px;
+}
+
+input[type="submit"] {
+	padding: 10px 0;
+	margin: 0;
+	position: relative;
+	list-style: none;
+	border: 1px solid #b9dee1;
+	-webkit-border-radius: 8px/7px;
+	text-align: center;
+	font-weight: bold;
+	float: left;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #b1dfe3), color-stop(1, #87acaf));
+}
+
+.submit {
+	text-align: center;
+}
+
+.main .textboxCtrl_010 h3,
+.main .textboxCtrl_010 .title {
+	font-weight: bold;
+}
+
+.subTxt {
+	font-weight: normal;
+}
+
+.main .inquiryItem {
+	width: 100%;
+}
+
+.inquiryItem .checkboxCtrl_010 {
+	margin-right: 10px;
+	float: left;
+}
+
+.inquiryItem .textCtrl_020 {
+	width: 90%;
+	float: left;
+}
+
+.main .attention {
+	margin: 0 10px 8px 0;
+}
+
+.main .attention li {
+	color: #e50012;
+}
+
+.i500a {
+	width: 100%;
+	ime-mode: active;
+}
+
+/*テキスト type="text"用*/
+.textCtrl_010 {
+	padding: 4px 4px 2px 0;
+	float: left;
+}
+
+/*type="radio"用*/
+.radioCtrl_010 {
+	padding: 1px 1px 0 0;
+	float: left;
+}
+
+.radioCtrl_020 {
+	padding: 1px 1px 0 0;
+}
+
+/*テキスト type="radio"用*/
+.textCtrl_030 {
+	padding: 0 6px 0 1px;
+	float: left;
+}
+
+/*エラーテキスト*/
+.textCtrl_905 {
+	padding: 0;
+	margin: 0;
+	clear: both;
+	font-size: 85%;
+	color: #E50012;
+}
+
+/*<select>用*/
+.selectCtrl_010 {
+	padding: 3px 3px 3px 0;
+	float: left;
+}
+
+/*<select>用（floatなし）*/
+.selectCtrl_020 {
+	padding: 3px 3px 3px 0;
+}
+
+/*<select>用（floatなし）*/
+.selectCtrl_030 {
+	width: 160px;
+	height: 35px;
+}
+
+/*<select>用（floatなし高さのみ）*/
+.selectCtrl_040 {
+	height: 35px;
+}

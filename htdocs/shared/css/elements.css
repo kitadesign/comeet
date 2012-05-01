@@ -1,0 +1,699 @@
+@charset 'utf-8';
+
+/* heading Element
+-------------------------------------------------- */
+
+h2 {
+	padding: 5px 0;
+	margin: 0 0 10px;
+	text-align: center;
+	font-weight: bold;
+	border-top: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	background: -webkit-gradient(linear,left top,left bottom,from(#ffffff),to(#cccccc));
+	color: #313131;
+}
+
+h2.imgHead {
+	padding: 0 10px;
+	margin: 0 0 6px;
+	text-align: left;
+	font-weight: bold;
+	border: none;
+	background: none;
+}
+
+h2.txtHead {
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	font-weight: bold;
+	border: none;
+	background: none;
+}
+
+h2.txtHead span {
+	font-size: 110%;
+}
+
+
+/* viewport
+-------------------------------------------------- */
+
+#viewport {
+/*	position: relative;
+	overflow-x: hidden;
+	width: 100%;*/
+}
+
+
+/* menuContent
+-------------------------------------------------- */
+
+#menuContent #pageContent {
+	position: absolute;
+	top: 0;
+	left: 260px;
+	width: 100%;
+}
+
+/* menu
+-------------------------------------------------- */
+
+#menu {
+	width: 260px;
+	overflow: hidden;
+}
+
+#menu .ownerName {
+	padding: 7px 10px;
+	border-bottom: 1px solid #666;
+}
+
+#menu .ownerName > div {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#menu .ownerName  .image {
+	padding-right: 10px;
+}
+
+#menu .menuList {
+	padding: 10px;
+}
+
+#menu .menuList dd + dt {
+	margin-top: 20px;
+}
+
+/* wrapper
+-------------------------------------------------- */
+
+#wrapper {
+	position:absolute;
+	z-index:1;
+	top: 50px;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	overflow: auto;
+}
+
+#menuContent #wrapper {
+	position: static;
+}
+
+
+/* main
+-------------------------------------------------- */
+
+.main {
+	margin: 10px 0 10px;
+	width: 100%;
+	min-height: 300px;
+}
+
+/* scroller
+-------------------------------------------------- */
+
+#scroller {
+	width: 100%;
+}
+
+/* selectedArea
+-------------------------------------------------- */
+
+#selectedArea {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+
+ul.selectedList {
+	margin: 0 auto;
+	display: table;
+	width: 100%;
+	border-top: 1px solid #666;
+}
+
+ul.selectedList a {
+	display: block;
+}
+
+ul.selectedList li {
+	padding: 7px 0 10px;
+	display: table-cell;
+	width: 33%;
+	text-align: center;
+	border-right: 1px solid #666;
+}
+
+ul.selectedList li:last-child {
+	border-right: 0;
+}
+
+ul.selectedList li .image {
+	padding: 5px;
+	display: inline-block;
+	position: relative;
+}
+
+ul.selectedList li .text{
+	font-size: 11px;
+}
+
+
+#selectedArea .badge {
+	position: absolute;
+	top: -5px;
+	right: 0;
+}
+
+#selectedArea .badge img {
+	vertical-align: middle;
+}
+
+#selectedArea .badge a {
+	display: inline;
+}
+
+/* flickable1
+-------------------------------------------------- */
+
+#flickable1 {
+	margin: 0 auto 10px;
+	overflow: auto;
+	width: 300px;
+	height: 120px;
+}
+
+/*#flickable1 .ui-flickable-container {
+	cursor: pointer;
+}*/
+
+#flickable1 ul.selectedList {
+	display: block;
+	width: 600px;
+	border-top: 0;
+}
+
+#flickable1 ul.selectedList li {
+	margin: 0 5px;
+	width: 80px;
+	height: 80px;
+	position: static;
+	float: left;
+	display: inline;
+	border-right: 0;
+}
+
+/* paragraph Element
+-------------------------------------------------- */
+
+.strongType_010 {
+	font-weight: bold;
+}
+
+.colorRed {
+	color: #cd1c1c;
+}
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.floatLeft {
+	float: left;
+}
+
+.floatRight {
+	float: right;
+}
+
+.head {
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 5px;
+	color: #000000;
+}
+
+.lead {
+	font-size: 85%;
+	padding: 5px 0;
+}
+
+.note {
+	font-size: 120%;
+}
+
+/* siteHeader
+-------------------------------------------------- */
+
+.siteHeader {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 2;
+	width:100%;
+}
+
+#menuContent .siteHeader {
+	position: static;
+}
+
+#menu + #wrapper > .main {
+	position: absolute;
+	top: 50px;
+	left: 0;
+}
+
+.local-header {
+	padding: 0 0 3px;
+	margin: 0 0 15px;
+	position: relative;
+	background: -webkit-gradient(linear,left top,left bottom,from(#ffffff),to(#eaeaea));
+	border-bottom: 1px solid #666;
+}
+
+.local-header h1 {
+	width: 60%;
+	padding: 10px 0 8px;
+	margin: 0 auto;
+	text-align: center;
+	font-weight: bold;
+	text-shadow: 0 1px #fff;
+	font-size: 18px;
+}
+
+.two_lines h1 {
+	padding-top: 23px;
+}
+
+.local-header .headerLinkNext {
+	padding: 4px 10px 3px;
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	border: 1px solid #b1b1b1;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background: #f6f6f6;
+	-webkit-box-shadow: inset 0 -15px #e2e2e2;
+	font-size: 12px;
+}
+
+.local-header .headerLinkNext a {
+	color: #4b92da;
+	text-decoration: none;
+	font-weight: bold;
+	display: block;
+}
+
+/* formBox
+-------------------------------------------------- */
+
+.formBox {
+	padding: 0;
+	margin: 10px 10px;
+}
+
+.formBtn {
+	list-style: none;
+	border: 1px solid #999999;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: inset 0 -12px #e2e2e2, 0 1px 1px #999999;
+	-webkit-box-shadow: inset 0 -12px #e2e2e2, 0 1px 1px #999999;
+	background: #f6f6f6;
+	font-size: 85%;
+	font-weight: bold;
+}
+
+.formLeftBtn {
+	width: 155px;
+	padding: 0 0 0 8px;
+	float: left;
+}
+
+.formRightBtn {
+	width: 119px;
+	padding: 0 0 0 5px;
+	float: right;
+}
+
+.formCenterBtn {
+	text-align: center;
+	display: inline-block;
+}
+
+.formBtn a {
+	display: block;
+	text-align: center;
+	line-height: 1.2;
+}
+
+.formLeftBtn a {
+	padding: 8px 0 6px 9px;
+	background: url(/shared/images/icon_form_search.gif) left center no-repeat;
+	-webkit-background-size: 18px 17px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 18px 17px;　/* Firefox用 */  
+	-o-background-size: 18px 17px;　/* Opera用 */ 
+}
+
+.formRightBtn a {
+	padding: 8px 0 6px 20px;
+	background: url(/shared/images/icon_form_folder.gif) left center no-repeat;
+	-webkit-background-size: 20px 12px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 20px 12px;　/* Firefox用 */  
+	-o-background-size: 20px 12px;　/* Opera用 */ 
+}
+
+.formCenterBtn a {
+	padding: 8px 20px 6px;
+}
+
+.formRightBtnOn {
+	border: 1px solid #cccccc;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: inset 0 -12px #f0f0f0, 0 1px 1px #f7f7f7;
+	-webkit-box-shadow: inset 0 -12px #f0f0f0, 0 1px 1px #f7f7f7;
+	background: #ffffff;
+}
+
+.formRightBtnOn span {
+	padding: 8px 0 6px 20px;
+	display: block;
+	color: #999999;
+	text-align: center;
+	line-height: 1.2;
+	background: url(/shared/images/icon_form_folder_on.gif) left center no-repeat;
+	-webkit-background-size: 21px 12px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 21px 12px;　/* Firefox用 */  
+	-o-background-size: 21px 12px;　/* Opera用 */ 
+}
+
+.formSelection {
+	width: 300px;
+	padding:0px;
+	margin: 0 10px 2px;
+}
+
+.formSelection form .selectCtrl_030 {
+	width: 300px;
+}
+
+.formBox p {
+	padding: 0 10px;
+	margin: 0;
+}
+
+/* editSection
+-------------------------------------------------- */
+
+.editSection {
+	position: relative;
+	border-bottom: 1px solid #666;
+}
+
+.lasteditSection {
+	border-bottom: 0;
+}
+
+.editSection .editBtn {
+	position: absolute;
+	top: 0;
+	right: 10px;
+}
+
+/* threeBtnType1
+-------------------------------------------------- */
+
+.threeBtnType1 {
+	padding: 15px 10px 0;
+	margin: 0 0 20px;
+	font-size: 85%;
+}
+
+.threeBtnType1 .btn {
+	width: 28%;
+	padding: 0 0 0 6px;
+	margin: 0 4% 0 0;
+	float: left;
+	border: 1px solid #999999;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background: #f6f6f6;
+	-moz-box-shadow: inset 0 -21px #e2e2e2, 0 1px 1px #999999;
+	-webkit-box-shadow: inset 0 -21px #e2e2e2, 0 1px 1px #999999;
+}
+
+.threeBtnType1 li:last-child {
+	margin: 0;
+	float: right;
+}
+
+.threeBtnType1 .btn a {
+	padding: 8px 0 6px 21px;
+	display: block;
+	font-size: 90%;
+	font-weight: bold;
+	line-height: 1.2;
+}
+
+.threeBtnType1 .btnStar a {
+	background: url(/shared/images/icon_star.gif) left center no-repeat;
+	-webkit-background-size: 14px 14px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 14px 14px;　/* Firefox用 */  
+	-o-background-size: 14px 14px;　/* Opera用 */ 
+}
+
+.threeBtnType1 .btnHome a {
+	background: url(/shared/images/icon_home.gif) left center no-repeat;
+	-webkit-background-size: 15px 13px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 15px 13px;　/* Firefox用 */  
+	-o-background-size: 15px 13px;　/* Opera用 */ 
+}
+
+.threeBtnType1 .btnFolder a {
+	padding: 8px 0 6px 27px;
+	background: url(/shared/images/icon_folder.gif) left center no-repeat;
+	-webkit-background-size: 15px 14px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 15px 14px;　/* Firefox用 */  
+	-o-background-size: 15px 14px;　/* Opera用 */ 
+}
+
+/* navType1
+-------------------------------------------------- */
+
+.navType1 ul {
+	padding: 0;
+	margin: 0 10px 10px;
+}
+
+.navType1 li {
+	padding: 0;
+	margin: 0;
+	border-left: 1px solid #ababab;
+	border-right: 1px solid #ababab;
+	border-bottom: 1px solid #ababab;
+	background: -webkit-gradient(linear,left top,left bottom,from(#ffffff),to(#ececec));
+}
+
+.navType1 li:first-child {
+	border-top: 1px solid #ababab;
+}
+
+.navType1 a {
+	padding: 14px 50px 13px 14px;
+	font-weight: bold;
+	display: block;
+	background: url(/shared/images/nav_arrow_030.png) right center no-repeat;
+	-webkit-background-size: 32px 17px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 32px 17px;　/* Firefox用 */  
+	-o-background-size: 32px 17px;　/* Opera用 */ 
+}
+
+/* navType2
+-------------------------------------------------- */
+
+.navType2 ul {
+	padding: 0;
+	margin: 10px;
+	-webkit-border-radius: 8px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 0 3px #333333;
+	box-shadow: 0 0 3px #333333;
+}
+
+.navType2 .layoutBox {
+	padding: 0;
+	margin: 0;
+}
+
+.navType2 li {
+	padding: 0 0 5px;
+	margin: 0;
+	border-top: 1px solid #cccccc;
+	background: #ffffff url(/shared/images/nav_arrow_010.png) right center no-repeat;
+	position: relative;
+	-webkit-background-size: 39px 29px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 39px 29px;　/* Firefox用 */  
+	-o-background-size: 39px 29px;　/* Opera用 */ 
+}
+
+.navType2 li:first-child {
+	border-top: none;
+	-webkit-border-top-right-radius: 8px;
+	-webkit-border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+}
+
+.navType2 li:last-child {
+	-webkit-border-bottom-left-radius: 8px;
+	-webkit-border-bottom-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+.navType2 li .deleteBtn {
+	padding: 0 5px 0 0;
+	margin: 0;
+	font-weight: bold;
+	list-style: none;
+	border: 1px solid #999999;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: inset 0 -12px #e2e2e2, 0 1px 1px #999999;
+	-webkit-box-shadow: inset 0 -12px #e2e2e2, 0 1px 1px #999999;
+	background: #f6f6f6;
+	font-size: 85%;
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+}
+
+.navType2 li .deleteBtn a {
+	padding: 6px 5px 5px 23px;
+	background: url(/shared/images/icon_arrow_delete.gif) 5px center no-repeat;
+	-webkit-background-size: 11px 11px;　/* Safari,Google Chrome用 */  
+	-moz-background-size: 11px 11px;　/* Firefox用 */  
+	-o-background-size: 11px 11px;　/* Opera用 */ 
+}
+
+.navType2 a {
+	padding: 7px 45px 0 0;
+	font-weight: bold;
+	display: block;
+}
+
+.navType2 a:hover,
+.navType2 a:active {
+	color: #1972e1;
+	text-decoration: none;
+}
+
+/* threeColumn01
+-------------------------------------------------- */
+
+.threeColumn01 {
+	width: 100%;
+	display: table;
+}
+
+.threeColumn01 li {
+	padding: 5px;
+	display: table-cell;
+	width: 33%;
+	text-align: center;
+}
+
+/* hr
+-------------------------------------------------- */
+
+.hr {
+	border-bottom: 1px solid #666;
+}
+
+.hr_dashed {
+	width: 100%;
+	height: 1px;
+	border-bottom: 1px dashed #bcbcbc;
+	background: none;
+}
+
+/* pickupList
+-------------------------------------------------- */
+.pickupList li {
+	padding: 10px;
+	border-bottom: 1px solid #666;
+}
+	
+.pickupList li:first-child {
+	padding-top: 0;
+}
+	
+.pickupList li:last-child {
+	border-bottom: 0;
+}
+
+.pickupList li > div {
+	display: table-cell;
+	vertical-align: top;
+}
+
+.pickupList li .image {
+	padding-right: 10px;
+}
+
+.pickupList li .formBox {
+	padding-left: 10px;
+	vertical-align: middle;
+}
+
+.pickupList li .formBox a {
+	padding: 8px 10px 6px;
+}
+
+.pickupList li .formBox li {
+	padding: 0;
+}
+
+/* changeMarginBottom0
+-------------------------------------------------- */
+
+.changeMarginBottom0 {
+	margin-bottom: 0;
+}
+
+/* changeMarginBottom10
+-------------------------------------------------- */
+
+.changeMarginBottom10 {
+	margin-bottom: 10px;
+}
+
+/* changeMarginBottom30
+-------------------------------------------------- */
+
+.changeMarginBottom30 {
+	margin-bottom: 30px;
+}
+
+/* changeMarginBottom50
+-------------------------------------------------- */
+
+.changeMarginBottom50 {
+	margin-bottom: 50px;
+}

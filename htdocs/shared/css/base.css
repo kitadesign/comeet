@@ -1,0 +1,107 @@
+@charset 'utf-8';
+
+/* body
+-------------------------------------------------- */
+
+/*html,
+body {
+	overflow-x: hidden;
+}*/
+
+body {
+	padding: 0;
+	font-size: 90%;
+	line-height: 1.6;
+	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", sans-serif;
+	text-align: left;
+	min-width: 320px;
+	-webkit-text-size-adjust: none;
+}
+
+body h1 {
+	color: #000000;
+}
+
+body h2,
+body p {
+	color: #666666;
+}
+
+#config01 .main .selectionBox p {
+	color: #ffffff;
+}
+
+
+/* body#fixed
+-------------------------------------------------- */
+
+body#fixed .main {
+	position: absolute;
+	z-index: 1;
+	width: 100%;
+}
+
+body#fixed  #wrapper {
+	bottom: 95px;
+}
+
+
+/* link
+-------------------------------------------------- */
+
+a {
+	color: #1972e1;
+	outline-style: none;
+	text-decoration: none;
+}
+
+/* img
+-------------------------------------------------- */
+
+img {
+	vertical-align: bottom;
+}
+
+/* global-header
+-------------------------------------------------- */
+
+.global-header {
+	padding: 10px 0 0;
+	margin: 0 0 36px;
+}
+
+/* globalFooter
+-------------------------------------------------- */
+
+.globalFooter {
+	padding: 10px;
+	border-top: 1px solid #666;
+	text-align: center;
+	font-size: 85%;
+	background: #fff;
+}
+
+/* clearfix
+-------------------------------------------------- */
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden;
+	line-height: 0;
+	font-size: 0;
+	overflow:hidden;
+}
+
+.clearfix {
+	min-height: 1px;
+}
+
+/* clear
+-------------------------------------------------- */
+
+.clear {
+	clear: both;
+}

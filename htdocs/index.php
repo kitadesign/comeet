@@ -1,5 +1,16 @@
 <?php
-// Exec
 require_once('../libs/setup.php');
-echo('a');
+
+new PageController(function($self){
+	$facebook = new FacebookAPI();
+	try {
+		$facebookId = $facebook->getFacebookId();
+		if ( empty( $facebookId ) ) $self->redirect('/login.php');
+		$memberId = $dao->getMemberId ( $facebookId );
+		$fbUserProfile = $facebook->getUserInfo();
+	} catch( FacebookApiException $fae ) {
+		$self->redirect('/login.php');
+	}
+	$self->setTemplate( 'index' );
+});
 ?>
