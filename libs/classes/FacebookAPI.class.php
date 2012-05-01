@@ -17,11 +17,16 @@ class FacebookAPI extends Facebook
 	}
 
 	public function getFacebookId () {
+		return '1234567890';
 		return $this->getUser();
 	}
 
 	public function getUserInfo () {
 		return $this->api('/me');
+	}
+
+	public function getFriends () {
+		return $this->api('/me/friendlists');
 	}
 
 	public function getAccessToken () {

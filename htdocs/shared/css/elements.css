@@ -40,17 +40,17 @@ h2.txtHead span {
 /* viewport
 -------------------------------------------------- */
 
-#viewport {
-/*	position: relative;
+.viewport {
+	position: relative;
 	overflow-x: hidden;
-	width: 100%;*/
+	width: 100%;
 }
 
 
 /* menuContent
 -------------------------------------------------- */
 
-#menuContent #pageContent {
+.pageContent {
 	position: absolute;
 	top: 0;
 	left: 260px;
@@ -100,7 +100,7 @@ h2.txtHead span {
 	overflow: auto;
 }
 
-#menuContent #wrapper {
+.pageContent #wrapper {
 	position: static;
 }
 
@@ -112,6 +112,7 @@ h2.txtHead span {
 	margin: 10px 0 10px;
 	width: 100%;
 	min-height: 300px;
+	top: 50px;
 }
 
 /* scroller
@@ -267,11 +268,11 @@ ul.selectedList li .text{
 	width:100%;
 }
 
-#menuContent .siteHeader {
-	position: static;
+.pageContent .siteHeader {
+/*	position: static;*/
 }
 
-#menu + #wrapper > .main {
+#menu + #pageContent > .main {
 	position: absolute;
 	top: 50px;
 	left: 0;
@@ -696,4 +697,8 @@ ul.selectedList li .text{
 
 .changeMarginBottom50 {
 	margin-bottom: 50px;
+}
+
+.paddingTop50 {
+	padding-top: 50px;
 }
