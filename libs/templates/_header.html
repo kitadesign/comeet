@@ -2,16 +2,19 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>Comeet</title>
+<title>Comeet<?php if ( $_header_title_ ) echo( '【' . $_header_title_ . '】' ); ?></title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
 <!--/viewportの指定-->
 <meta name="format-detection" content="telephone=no">
 <link rel="apple-touch-icon" href="/shared/images/apple-touch-icon.png">
 <link rel="stylesheet" href="/shared/css/screen.css" media="all">
-<script src="/shared/js/zepto.min.js"></script>
-<script src="/shared/js/underscore-min.js"></script>
-<script src="/shared/js/libs.js"></script>
+<script type="application/javascript" src="/shared/js/zepto.min.js"></script>
+<script type="application/javascript" src="/shared/js/underscore-min.js"></script>
+<script type="application/javascript" src="/shared/js/libs.js"></script>
+<?php if ( isset( $_header_loadJS_ ) ) { foreach ( $_header_loadJS_ as $value ) { ?>
+<script type="application/javascript" src="/shared/js/<?php echo( $value ); ?>.js"></script>
+<?php } } ?>
 <script type="application/javascript" src="/shared/js/iscroll.js"></script>
-<script src="/shared/js/ga.js"></script>
+<script type="application/javascript" src="/shared/js/ga.js"></script>
 </head>
 <body>

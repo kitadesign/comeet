@@ -10,7 +10,7 @@
 				</ul>
 			</div>
 		</header>
-		
+
 		<div id="wrapper">
 			<div class="main">
 				<div id="scroller">
@@ -62,14 +62,16 @@
 							</li>
 						</ul>
 					</section>
-				<?php require_once( TEMPLATES_DIR . '_footer_1.html' ); ?>
+<?php require_once( TEMPLATES_DIR . '_footer_1.html' ); ?>
 				<!-- /scroller --></div>
 			<!-- /main --></div>
 		<!-- /wrapper --></div>
 	<!-- /pageContent --></div>
 <!-- /viewport --></div>
+<section id="selectedArea" style="display:none;"></section>
 <?php jsGateway( 'meet_feed', '__meet_feed.html' ); ?>
 <?php jsGateway( 'meet_setting', '__meet_setting.html' ); ?>
 <?php jsGateway( 'friend', '__friend.html' ); ?>
+<?php jsGateway( 'friend_select', '__friend_select.html' ); ?>
 <?php jsGateway( 'profile', '__profile.html' ); ?>
 <?php require_once( TEMPLATES_DIR . '_footer.html' ); ?>

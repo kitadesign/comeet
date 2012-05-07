@@ -14,3 +14,13 @@ function jsGateway ( $key, $template ) {
 	echo( $head . $tempString . $foot );
 }
 
+function getSignature ( $name, $base ) {
+	return base64_encode( sha1( $name . '_' . $base . Conf::SIGNATURE_SOLT ) );
+}
+
+function isMatchSignature ( $name, $base, $signature ) {
+	if ( strlen( $name ) == 0 ) return false;
+	if ( strlen( $base ) == 0 ) return false;
+	if ( strlen( $signature ) == 0 ) return false;
+	return ( getSignature( $name, $base ) == $signature );
+}

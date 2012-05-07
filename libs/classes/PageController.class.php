@@ -2,11 +2,13 @@
 require_once( CLASSES_DIR . 'Controller.class.php' );
 
 /**
- * 全てのページの基礎機能を提供する
- * @author yukihiro.kitazawa
+ * HTMLページの基礎機能を提供するコントローラ
+ * @Author yukihiro.kitazawa
  */
 class PageController extends Controller
 {
+	private $_loadJavaScriptFile = array();
+
 	/**
 	 * コンストラクタ
 	 * ここで全てが実行される
@@ -14,7 +16,30 @@ class PageController extends Controller
 	 */
 	public function __construct ( $action ) {
 		parent::__construct ( $action );
+		if ( count( $this->_loadJavaScriptFile ) > 0 )
+			$this->setData( '_header_loadJS_', $this->_loadJavaScriptFile );
 		Template::show( $this->_template, $this->_datum );
+	}
+
+	/**
+	 * 画面にどのJSを読み込むか設定する
+	 * @params string $filename
+	 */
+	public function setJavaScript ( $filename ){
+		$this->_loadJavaScriptFile[] = $filename;
+	}
+
+	/**
+	 * 画面のタイトルを設定する
+	 * @params string $title
+	 */
+	public function setTitle ( $title ) {
+		$this->setData( '_header_title_', $title );
+	}
+
+	public function setSignature ( $signatureName, $signatureBase ) {
+		$signature = getSignature( $signatureName, $signatureBase );
+		$this->setData( '_footer_signature_', $signature );
 	}
 
 	/**

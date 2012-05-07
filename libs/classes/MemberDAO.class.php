@@ -100,6 +100,20 @@ class MemberDAO extends LogDAO
         return $res->COUNT;
     }
 
+	/**
+	 * 登録した活動場所を取得する
+	 */
+	public function getLocationIdByMemberId ( $memberId ) {
+        $sql = 'SELECT location_id FROM member_local WHERE member_id = ' . self::BIND_MEMBER_ID . ';';
+        $res = $this->queryAll( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
+        if ( empty( $res ) ) return array();
+        $arr = array();
+        foreach( $res as $row ){
+            $arr[] = $row->location_id;
+        }
+        return $arr;
+	}
+
     /**
      * プロフィールタグ一覧を取得する
      */

@@ -1,2 +1,10 @@
+<div id="internal_params"
+<?php if ( isset( $_footer_signature_ ) ) { ?>
+ data-signature="<?php echo( $_footer_signature_ ); ?>"
+<?php } ?>
+<?php if ( isset( $_internal_params_ ) ) { foreach ( $_internal_params_ as $key => $value  ) { ?>
+ data-<?php echo( $key ); ?>="<?php echo( $value ); ?>"
+<?php } } ?>
+></div>
 </body>
 </html>

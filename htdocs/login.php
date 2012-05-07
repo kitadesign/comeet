@@ -3,7 +3,7 @@ require_once('../libs/setup.php');
 
 new PageController(function($self){
 	$dao = MemberUpdateDAO::getInstance();
-	$facebook = new FacebookAPI();
+	$facebook = FacebookAPI::getInstance();
 
 	try {
 		$facebookId = $facebook->getFacebookId();
