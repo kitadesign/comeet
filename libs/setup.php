@@ -14,6 +14,7 @@ define( 'LOGS_DIR', dirname($dir) . DS . 'logs' . DS );
 
 // Set up application.
 date_default_timezone_set('Asia/Tokyo');
+require_once( LIBS_DIR . 'functions.php' );
 require_once( CLASSES_DIR . 'PageController.class.php' );
 
 // Charset UTF-8

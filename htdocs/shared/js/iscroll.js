@@ -142,7 +142,6 @@ var m = Math,
 		else that.scroller.style.cssText += ';position:absolute;top:' + that.y + 'px;left:' + that.x + 'px';
 
 		if (that.options.useTransition) that.options.fixedScrollbar = true;
-		console.log(that.scroller.style);
 
 		that.refresh();
 
