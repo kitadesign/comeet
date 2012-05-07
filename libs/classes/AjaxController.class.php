@@ -18,9 +18,28 @@ class AjaxController extends Controller
 	}
 
 	/**
+	 * 呼び出しが適切であるか認証を行う
+	 */
+	public function isValidCall ( $checkName, $checkBase, $authType = 'signature' ) {
+		$postAuthType = $this->getPostData( 'auth_type' );
+		if ( $authType !== $postAuthType ) return false;
+		switch ( $authType ) {
+			case 'signature':
+			default:
+				$signature = $this->getPostData( 'signature' );
+				if ( isMatchSignature( $checkName, $checkBase, $signature ) ) return true;
+				return false;
+		}
+	}
+
+	/**
 	 * 出力方法を指定してアウトプットする
 	 */
 	private function _output( $type ) {
+		if ( $this->_template == 'error' ) {
+			header( 'HTTP/1.0 500 Internal Server Error' );
+			exit( 1 );
+		}
 		$datum = $this->_datum;
 		$output = '';
 		switch ( $type ) {

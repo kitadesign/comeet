@@ -1,11 +1,28 @@
 <?php
+
+/**
+ * 定数関係
+ */
 class Conf
 {
+	/**
+	 * システムが参照するFacebookアプリID
+	 */
 	const FACEBOOK_APP_ID = '290024314417743';
+	
+	/**
+	 * システムが参照するFacebookアプリシークレット
+	 */
 	const FACEBOOK_APP_SECRET = '9de276768fb860fd389eabff6e1061f1';
 
+	/**
+	 * シグネチャのソルト
+	 */
 	const SIGNATURE_SOLT = 'MJ4MGRQCuofP9YMr';
 
+	/**
+	 * 活動場所ID
+	 */
 	public static $LOCATION_ID = array(
 		'1' => '北海道',
 		'2' => '青森県',

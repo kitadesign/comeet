@@ -29,11 +29,6 @@ class Controller
 	protected $_cookie   = array();
 	
 	/**
-	 * ユーザセッションのデータ
-	 */
-	protected $_session  = array();
-	
-	/**
 	 * テンプレートに渡す値
 	 */
 	protected $_datum    = array();
@@ -78,6 +73,26 @@ class Controller
 		} else {
 			$this->_datum[$key] = $value;
 		}
+	}
+
+	public function getPostData ( $key ) {
+		if ( !isset($this->_post[$key]) ) return null;
+		return $this->_post[$key];
+	}
+
+	public function getGetData ( $key ) {
+		if ( !isset($this->_get[$key]) ) return null;
+		return $this->_get[$key];
+	}
+
+	public function getRequestData ( $key ) {
+		if ( !isset($this->_request[$key]) ) return null;
+		return $this->_request[$key];
+	}
+
+	public function getCookieData ( $key ) {
+		if ( !isset($this->_cookie[$key]) ) return null;
+		return $this->_cookie[$key];
 	}
 
 	/**

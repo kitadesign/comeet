@@ -1,6 +1,10 @@
 <?php
 require_once('../libs/setup.php');
+require_once( CLASSES_DIR . 'PageController.class.php' );
 
+/**
+ * トップ画面
+ */
 new PageController(function($self){
 	$dao = MemberDAO::getInstance();
 	$facebook = FacebookAPI::getInstance();
@@ -9,7 +13,7 @@ new PageController(function($self){
 		if ( empty( $facebookId ) ) $self->redirect('/login.php');
 
 		$memberId = $dao->getMemberId ( $facebookId );
-		$fbUserProfile = $facebook->getUserInfo();
+		$fbUserProfile = $facebook->getUserInfo(); // TODO: これ必要？
 
 		$locationIds = $dao->getLocationIdByMemberId( $memberId );
 		if ( empty( $locationIds ) || count( $locationIds ) == 0 ) {
@@ -21,6 +25,22 @@ new PageController(function($self){
 			$self->setTemplate( 'set_local' );
 			return;
 		}
+
+		// TODO: MeetFeed取得
+		$list = array();
+		$self->setData( 'meet_count', count( $list ) );
+		$self->setData( 'meet_list', $list );
+
+		$profile = $dao->getMemberProfileForDetail( $memberId );
+		if ( empty( $profile ) ){
+			// TODO: 本来エラーの挙動なのでErrorにしてしまっていいのでは？
+			$name = ( isset( $fbUserProfile['name'] ) ) ? $fbUserProfile['name'] : '';
+		} else {
+			$name = $profile->member_name;
+		}
+		$self->setData( 'member_name', $name );
+
+		$self->setData( 'facebook_id', $facebookId );
 
 	} catch( FacebookApiException $fae ) {
 		$self->redirect('/login.php');

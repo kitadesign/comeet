@@ -1,6 +1,10 @@
 <?php
 require_once('../libs/setup.php');
+require_once( CLASSES_DIR . 'PageController.class.php' );
 
+/**
+ * ログイン認証画面
+ */
 new PageController(function($self){
 	$dao = MemberUpdateDAO::getInstance();
 	$facebook = FacebookAPI::getInstance();
