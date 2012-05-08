@@ -38,7 +38,7 @@ abstract class BaseDAO
                 }
                 $this->_connect[$mode]->setAttribute( PDO::ATTR_CASE, PDO::CASE_NATURAL );
                 $this->_connect[$mode]->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-                $this->_connect[$mode]->setAttribute( PDO::ATTR_ORACLE_NULLS, PDO::NULL_TO_STRING );
+                $this->_connect[$mode]->setAttribute( PDO::ATTR_ORACLE_NULLS, PDO::NULL_NATURAL );
                 $this->_connect[$mode]->setAttribute( PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true );
             } catch( Exception $e ) {
                 Logger::info( __METHOD__, $e->getMessage() );

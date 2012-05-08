@@ -10,7 +10,7 @@ new PageController(function($self){
 	$facebook = FacebookAPI::getInstance();
 	try {
 		$facebookId = $facebook->getFacebookId();
-		if ( empty( $facebookId ) ) $self->redirect('/login.php');
+		if ( !Validate::isValidFacebookId( $facebookId ) ) $self->redirect('/login.php');
 
 		$memberId = $dao->getMemberId ( $facebookId );
 		$fbUserProfile = $facebook->getUserInfo(); // TODO: これ必要？

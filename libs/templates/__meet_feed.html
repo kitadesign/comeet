@@ -1,0 +1,19 @@
+<section>
+<% if (data.meetfeed && data.meetfeed.length > 0) { %>
+	<ul class="pickupList">
+<% _.each(data.meetfeed, function(member) { %>
+		<li>
+		<div class="image"><img src="<%= member.icon %>" alt="" width="50" height="50"></div>
+			<div class="text">
+				<p><span class="pickupName">名前；<%= member.name %></span><br>
+					<span class="pickupCompany">会社名：<%= member.company %></span><br>
+					<span class="pickupComment">自己紹介：<%= member.comment %></span>
+				</p>
+			</div>
+		</li>
+<% }); %>
+	</ul>
+<% } else { %>
+	<div class="textboxCtrl_010">MeetFeedは0件です</div>
+<% } %>
+</section>

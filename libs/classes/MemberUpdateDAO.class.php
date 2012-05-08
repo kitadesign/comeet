@@ -190,16 +190,15 @@ class MemberUpdateDAO extends MemberDAO
 	/**
 	 * プロフィールタグを編集する
 	 */
-	public function replaceProfileTag ( $memberId, $profileTags, $enable_flg ) {
+	public function replaceProfileTag ( $memberId, $profileTags ) {
 		try {
 			$this->begin();
 			foreach ( $profileTags as $key => $profileTag ) {
-				$sql = 'REPLACE INTO member_profile_tag SET `member_id` = ' . self::BIND_MEMBER_ID . ', `key_number` = ' . self::BIND_KEY_NUMBER . ', `tag_text` = ' . self::BIND_TAG_TEXT . ', `enable_flg` = ' . self::BIND_ENABLE_FLG . ';';
+				$sql = 'REPLACE INTO member_profile_tag SET `member_id` = ' . self::BIND_MEMBER_ID . ', `key_number` = ' . self::BIND_KEY_NUMBER . ', `tag_text` = ' . self::BIND_TAG_TEXT . ';';
 				$this->update( $sql, array(
 					self::BIND_MEMBER_ID  => $memberId,
 					self::BIND_KEY_NUMBER => $key,
 					self::BIND_TAG_TEXT   => $profileTag,
-					self::BIND_ENABLE_FLG => ($key == $enable_flg) ? 1 : 0,
 				) );
 			}
 			$this->commit();

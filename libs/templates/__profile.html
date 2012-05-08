@@ -1,0 +1,32 @@
+<section>
+<p class="textboxCtrl_010 title">Likeされている人数：<%= data.like_count %>人</p>
+	<hr class="hr">
+</section>
+<section class="textboxCtrl_010 editSection" id="editName">
+	<h2 class="txtHead">名前</h2>
+	<p class="editBtn"><a href="#">編集</a></p>
+	<p class="changeMarginBottom10 text"><% if ( data.member_name ) { %><%= data.member_name %><% } %></p>
+<!-- /textboxCtrl_010 --></section>
+
+<section class="textboxCtrl_010 editSection" id="editCompanyEmail">
+	<h2 class="txtHead">会社メールアドレス</h2>
+	<p class="editBtn"><a href="#">編集</a></p>
+	<p class="changeMarginBottom10 text"><% if ( data.company_email_address ) { %><%- data.company_email_address %><% } %></p>
+<!-- /textboxCtrl_010 --></section>
+
+<section class="textboxCtrl_010 editSection" id="editPR">
+	<h2 class="txtHead">自分のPR情報</h2>
+	<p class="editBtn"><a href="#">Facebookと同期</a></p>
+	<p class="changeMarginBottom10 text"><% if ( data.member_pr ) { %><%- data.member_pr %><% } %></p>
+<!-- /textboxCtrl_010 --></section>
+
+<section class="textboxCtrl_010 editSection lasteditSection" id="editProfileTags">
+	<h2 class="txtHead">プロフィールタグ</h2>
+	<p>自身の仕事、人生に対するタグを3つまで設定できます。</p>
+	<p class="editBtn"><a href="#">編集</a></p>
+	<ul class="threeColumn01">
+		<li><% if ( data.profile_tag1 ) { %><%- data.profile_tag1 %><% } %></li>
+		<li><% if ( data.profile_tag2 ) { %><%- data.profile_tag2 %><% } %></li>
+		<li><% if ( data.profile_tag3 ) { %><%- data.profile_tag3 %><% } %></li>
+	</ul>
+<!-- /textboxCtrl_010 --></section>

@@ -1,0 +1,47 @@
+<?php require_once( TEMPLATES_DIR . '_header.html' ); ?>
+<header class="siteHeader">
+	<div class="local-header">
+		<h1>Comeet</h1>
+	</div>
+</header>
+<div id="wrapper">
+	<div class="main">
+		<div id="scroller">
+			<section class="changeMarginBottom30">
+				<div class="textboxCtrl_010">
+<?php if ($is_like) { ?>
+					<p>推奨取締役に選ばれていません。</p>
+					<p>このサイトの全部の機能を利用するためには推奨取締役に選ばれている必要があります。</p>
+<?php } else { ?>
+					<p>推奨取締役に選ばれています。</p>
+					<p>このサイトの全部の機能を利用することができます。</p>
+<?php } ?>
+				<!-- /textboxCtrl_010 --></div>
+			</section>
+	
+			<section>
+				<div class="textboxCtrl_010">
+					<p class="center">あなたの活動場所を選択してください。</p>
+					<p class="center">
+					<select id="locationId" name="locationId">
+						<option value="">選択して下さい</option>
+<?php foreach ( $location_ids as $key => $value ) { ?>
+						<option value="<?php echo( $key ); ?>"><?php echo( $value ); ?></option>
+<?php } ?>
+					</select>
+					</p>
+				<!-- /textboxCtrl_010 --></div>
+				<div class="formBox center">
+					<ul class="formBtn formCenterBtn">
+						<li id="setupLocalButton" class="backgroundGray"><a href="javascript:void(0);">設定</a></li>
+					</ul>
+				<!-- /formBox --></div>
+				<div id="loadingImage" class="formBox center" style="display:none;">
+					<img src="/shared/images/ajax-loader.gif" width="16px" height="11px" />
+				</div>
+			</section>
+<?php require_once( TEMPLATES_DIR . '_footer_1.html' ); ?>
+		<!-- /scroller --></div>
+	<!-- /main --></div>
+<!-- /wrapper --></div>
+<?php require_once( TEMPLATES_DIR . '_footer.html' ); ?>

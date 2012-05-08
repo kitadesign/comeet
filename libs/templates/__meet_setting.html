@@ -1,0 +1,39 @@
+<section class="textboxCtrl_010 editSection" id="editMeetingTag">
+	<h2 class="txtHead">ミーティングタグ</h2>
+	<p>ミーティングタグを3つまで設定できます。</p>
+	<p class="editBtn"><a href="#">編集</a></p>
+	<ul class="threeColumn01">
+		<li class="text"><% if ( data.meeting_tag1 ) { %><%- data.meeting_tag1 %><% } %></li>
+		<li class="text"><% if ( data.meeting_tag1 ) { %><%- data.meeting_tag2 %><% } %></li>
+		<li class="text"><% if ( data.meeting_tag1 ) { %><%- data.meeting_tag3 %><% } %></li>
+	</ul>
+	<ul class="threeColumn01" style="display:none;">
+		<li class="checkbox"><input type="checkbox" name=""></li>
+		<li class="checkbox"><input type="checkbox" name=""></li>
+		<li class="checkbox"><input type="checkbox" name=""></li>
+	</ul>
+<!-- /textboxCtrl_010 --></section>
+
+<section class="textboxCtrl_010 editSection" id="editMeetingProfile">
+	<h2 class="txtHead">ミーティング内容を記入してください</h2>
+	<p class="editBtn"><a href="#">編集</a></p>
+	<div><p><% if ( data.meetingProfile ) { %><%- data.meetingProfile %><% } %></p></div>
+	<!--	<div><textarea name="" id="" rows="10"></textarea></div> -->
+<!-- /textboxCtrl_010 --></section>
+
+<section class="textboxCtrl_010 editSection lasteditSection" id="editLocation">
+	<h2 class="txtHead">活動拠点</h2>
+	<p class="editBtn"><a href="#">編集</a></p>
+	<div><p><% if ( data.location ) { %><%- data.location %></p><% } %></div>
+<!--
+	<div class="changeMarginBottom10">
+		<select name="" id="">
+			<option value="テキスト1" selected="selected">テキスト1</option>
+			<option value="テキスト2">テキスト2</option>
+			<option value="テキスト3">テキスト3</option>
+			<option value="テキスト4">テキスト4</option>
+			<option value="テキスト5">テキスト5</option>
+		</select>
+	</div>
+-->
+<!-- /textboxCtrl_010 --></section>

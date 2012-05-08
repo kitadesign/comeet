@@ -17,11 +17,12 @@ date_default_timezone_set('Asia/Tokyo');
 require_once( LIBS_DIR . 'functions.php' );
 
 // Charset UTF-8
-ini_set('mbstring.language', 'Japanese');
-ini_set('mbstring.http_input', 'pass');
-ini_set('mbstring.http_output', 'pass');
-ini_set('mbstring.detect_order', 'UTF-8,eucJP-win,SJIS-win,JIS,ASCII');
-ini_set('mbstring.internal_encoding', 'UTF-8');
+ini_set( 'mbstring.language', 'Japanese' );
+ini_set( 'mbstring.http_input', 'pass' );
+ini_set( 'mbstring.http_output', 'pass' );
+ini_set( 'mbstring.detect_order', 'UTF-8,eucJP-win,SJIS-win,JIS,ASCII' );
+ini_set( 'mbstring.internal_encoding', 'UTF-8' );
+define( 'INTERNAL_ENCODING', 'UTF-8' );
 
 // Error Handle
 set_error_handler(function ($errno, $errstr, $errfile, $errline){

@@ -71,7 +71,7 @@ class MemberDAO extends LogDAO
      * 登録されている推奨取締役人数
      */
     public function getMemberLikeCountAll () {
-        $sql = 'SELECT COUNT(DISTINCT to_member_id) AS COUNT FROM member_like WHERE to_member_id <> "";';
+        $sql = 'SELECT COUNT(DISTINCT from_member_id) AS COUNT FROM member_like WHERE to_member_id <> "";';
         $res = $this->queryRow( $sql );
         if ( !isset( $res->COUNT ) ) return 0;
         return $res->COUNT;
@@ -106,7 +106,7 @@ class MemberDAO extends LogDAO
 	public function getLocationIdByMemberId ( $memberId ) {
         $sql = 'SELECT location_id FROM member_local WHERE member_id = ' . self::BIND_MEMBER_ID . ';';
         $res = $this->queryAll( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
-        if ( empty( $res ) ) return array();
+		if ( empty( $res ) ) return array();
         $arr = array();
         foreach( $res as $row ){
             $arr[] = $row->location_id;
@@ -161,7 +161,7 @@ class MemberDAO extends LogDAO
     public function getMemberProfileForDetail ( $memberId ) {
         $sql = 'SELECT member_name, company_email_address, member_pr, mtg_profile FROM member_profile WHERE member_id = ' . self::BIND_MEMBER_ID . ';';
         $res = $this->queryRow( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
-        if ( empty( $res ) ) return null;
+        if ( empty( $res ) ) return '';
         return $res;
     }
 

@@ -39,7 +39,7 @@ function getTemplate ( key, params ) {
 function getInternalParams ( key ) {
 	if ( key == '' ) return;
 	var $internalParams = $( '#internal_params' );
-	return $internalParams.attr( 'data-' + key );
+	return $internalParams.data( key );
 }
 
 // Call RPC to Server By JSON data
@@ -47,14 +47,60 @@ function callJsonRpc ( url, params, callback ) {
 	$.ajax({
 		type: 'POST',
 		dataType: 'json',
-		timeout: 300,
+		timeout: 10000,
 		url: '/'+url,
 		data: params,
 		success: function ( data ) {
+			console.log(arguments);
 			callback( true, data );
 		},
 		error: function(xhr, type){
+			console.log(arguments);
 			callback( false, xhr );
 		}
 	});
 }
+
+function getLoadingImage () {
+	var $img = $(document.createElement('img'));
+	$img.attr( 'src', '/shared/images/ajax-loader.gif' );
+	$img.attr( 'width', '16px' );
+	$img.attr( 'height', '11px' );
+	return $img;
+/*
+	var $div = $(document.createElement('div'));
+	$div.addClass('center');
+	$div.append($img);
+	return $div;
+*/
+}
+
+function getInputText ( text, size ) {
+	var $input = $(document.createElement('input'));
+	$input.attr( 'type', 'text' );
+	$input.attr( 'size', size );
+	$input.attr( 'value', text );
+	return $input;
+}
+
+function redirect ( url ) {
+	window.location.href = url;
+}
+
+function defineClass () {
+	var properties = _.toArray(arguments);
+	var klass = function(){
+		this.initialize.apply( this,arguments );
+	};
+	for ( var i=0,l=properties.length;i<l;i++ ) {
+		for ( var property in properties[i] ) {
+			klass.prototype[property] = properties[i][property];
+		}
+	}
+	if( !klass.prototype.initialize ){
+		klass.prototype.initialize = function(){};
+	}
+	klass.prototype.constructor = klass;
+	return klass;
+}
+
