@@ -63,6 +63,7 @@ h2.txtHead span {
 #menu {
 	width: 260px;
 	overflow: hidden;
+	background-color: #cccccc;
 }
 
 #menu .ownerName {
@@ -707,4 +708,10 @@ ul.selectedList li .text{
 	background-color: gray;
 }
 
+.borderGray {
+	border: 2px solid gray;
+}
 
+span.loadingImage img {
+	vertical-align: middle;
+}

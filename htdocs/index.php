@@ -38,15 +38,22 @@ new PageController(function($self){
 		} else {
 			$name = $profile->member_name;
 		}
-		$self->setData( 'member_name', $name );
-
+		$self->setData( 'member_name', html( $name ) );
 		$self->setData( 'facebook_id', $facebookId );
+
+		$count = $dao->getMemberLikeCount( $memberId );
+		$self->setData( 'like_count', $count );
 
 	} catch( FacebookApiException $fae ) {
 		$self->redirect('/login.php');
 	}
 	$self->setJavaScript( 'index' );
 	$self->setSignature( 'memberId', $memberId );
+	$self->setInternalParams( 'member_id', $memberId );
+	$self->setInternalParams( 'facebook_id', $facebookId );
+	$self->setInternalParams( 'edit-button', Conf::JA_EDIT_BUTTON );
+	$self->setInternalParams( 'save-button', Conf::JA_SAVE_BUTTON );
+	$self->setInternalParams( 'facebook-sync', Conf::JA_FACEBOOK_SYNC );
 	$self->setTemplate( 'index' );
 });
 ?>

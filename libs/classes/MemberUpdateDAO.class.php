@@ -77,18 +77,18 @@ class MemberUpdateDAO extends MemberDAO
 	/**
 	 * ミーティングタグを登録する
 	 */
-	public function replaceMeetingTag ( $memberId, $values, $enable ) {
+	public function replaceMeetingTag ( $memberId, $values, $enable = null ) {
 		try {
 			$this->begin();
 
 			foreach ( $values as $key => $value ) {
 				if ( strlen($value) > 0 ) {
-					$sql = 'REPLACE INTO member_mtg_tag SET `member_id` = ' . self::BIND_MEMBER_ID . ', `key_number` = ' . self::BIND_KEY_NUMBER . ', `tag_text` = ' . self::BIND_TAG_TEXT . ', `enable_flg` = ' . self::ENABLE_FLG . ';';
+					$sql = 'REPLACE INTO member_mtg_tag SET `member_id` = ' . self::BIND_MEMBER_ID . ', `key_number` = ' . self::BIND_KEY_NUMBER . ', `tag_text` = ' . self::BIND_TAG_TEXT . ', `enable_flg` = ' . self::BIND_ENABLE_FLG . ';';
 					$this->update( $sql, array(
 						self::BIND_MEMBER_ID => $memberId,
 						self::BIND_KEY_NUMBER => $key,
 						self::BIND_TAG_TEXT => $value,
-						self::ENABLE_FLG => ($key == $enable) ? 1 : 0, 
+						self::BIND_ENABLE_FLG => ($key == $enable) ? 1 : 0, 
 					) );
 				} else {
 					$sql = 'DELETE FROM member_mtg_tag WHERE `member_id` = ' . self::BIND_MEMBER_ID . ' AND `key_number` = ' . self::BIND_KEY_NUMBER . ';';
@@ -127,16 +127,22 @@ class MemberUpdateDAO extends MemberDAO
 	 * 活動場所を編集する
 	 */
 	public function updateMemberLocal ( $memberId, $locationIds ) {
-		if ( !is_array($locationIds) || count($locationIds) == 0 ) return false;
 		try {
 			$this->begin();
 			$sql = 'DELETE FROM member_local WHERE `member_id` = ' . self::BIND_MEMBER_ID . ';';
 			$this->update( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
-			foreach ( $locationIds as $locationId ) {
-				$sql = 'INSERT INTO member_local SET `member_id` = ' . self::BIND_MEMBER_ID . ', `location_id` = ' . self::BIND_LOCATION_ID . ';';
+			$sql = 'INSERT INTO member_local SET `member_id` = ' . self::BIND_MEMBER_ID . ', `location_id` = ' . self::BIND_LOCATION_ID . ';';
+			if ( is_array( $locationIds ) ) {
+				foreach ( $locationIds as $locationId ) {
+					$this->update( $sql, array(
+						self::BIND_MEMBER_ID   => $memberId,
+						self::BIND_LOCATION_ID => $locationId,
+					) );
+				}
+			} else {
 				$this->update( $sql, array(
 					self::BIND_MEMBER_ID   => $memberId,
-					self::BIND_LOCATION_ID => $locationId,
+					self::BIND_LOCATION_ID => $locationIds,
 				) );
 			}
 			$this->commit();

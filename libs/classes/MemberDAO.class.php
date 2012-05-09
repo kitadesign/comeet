@@ -131,15 +131,17 @@ class MemberDAO extends LogDAO
     /**
      * ミーティングタグ一覧を取得する
      */
-    public function getMeetingTag ( $memberId, $enable_flg = false ) {
+    public function getMeetingTags ( $memberId, $enable_flg = false ) {
         $plus_where = '';
         if( $enable_flg !== false ) $plus_where = ' AND enable_flg = ' . $enable_flg;
-        $sql = 'SELECT tag_text FROM member_mtg_tag WHERE member_id = ' . self::BIND_MEMBER_ID . $plus_where . ' ORDER BY key_number;';
+        $sql = 'SELECT key_number, tag_text, enable_flg FROM member_mtg_tag WHERE member_id = ' . self::BIND_MEMBER_ID . $plus_where . ' ORDER BY key_number;';
         $res = $this->queryAll( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
         if ( empty( $res ) ) return array();
         $arr = array();
-        foreach( $res as $row ){
-            $arr[] = $row->tag_text;
+        foreach( $res as $key => $row ){
+            $arr[$key]['number']   = $row->key_number;
+            $arr[$key]['text']   = $row->tag_text;
+            $arr[$key]['enable'] = ( $row->enable_flg ) ? 1 : 0;
         }
         return $arr;
     }

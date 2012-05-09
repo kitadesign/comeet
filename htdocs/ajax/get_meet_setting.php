@@ -20,7 +20,7 @@ new AjaxController(function($self){
 			throw new Exception( 'Invalid call!' );
 		}
 
-		$meetingTags = $dao->getMeetingTag( $memberId );
+		$meetingTags = $dao->getMeetingTags( $memberId );
 		$self->setData( 'meeting_tags', $meetingTags );
 
 		$profile = $dao->getMemberProfileForDetail( $memberId );
@@ -32,6 +32,8 @@ new AjaxController(function($self){
 			$values[] = Conf::$LOCATION_ID[$locationId];
 		}
 		$self->setData( 'location_ids', $values );
+
+		$self->setData( 'location_selecter', Conf::$LOCATION_ID );
 
 	} catch ( Exception $e ) {
 		Logger::error( 'get_meetfeed', $e->getMessage() );

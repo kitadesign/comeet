@@ -20,6 +20,10 @@ class Conf
 	 */
 	const SIGNATURE_SOLT = 'MJ4MGRQCuofP9YMr';
 
+	const JA_EDIT_BUTTON   = '編集';
+	const JA_SAVE_BUTTON   = '保存';
+	const JA_FACEBOOK_SYNC = 'Facebookと同期';
+
 	/**
 	 * 活動場所ID
 	 */

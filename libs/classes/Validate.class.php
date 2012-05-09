@@ -31,4 +31,19 @@ class Validate
 		}
 		return false;
 	}
+
+	public static function isValidMeetingProfile ( $value ) {
+		if ( empty( $value ) ) return true;
+		if ( strlen( $value, INTERNAL_ENCODING ) > 3000 ) return false;
+		return true;
+	}
+
+	public static function isValidMeetingTags ( $values ) {
+		if ( !is_array( $values ) ) return false;
+		foreach ( $values as $value ) {
+			if ( empty( $value ) ) continue;
+			if ( mb_strlen( $value, INTERNAL_ENCODING ) > 50 ) return false;
+		}
+		return true;
+	}
 }

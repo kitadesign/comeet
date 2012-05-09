@@ -8,6 +8,7 @@ require_once( CLASSES_DIR . 'Controller.class.php' );
 class PageController extends Controller
 {
 	private $_loadJavaScriptFile = array();
+	private $_internalParams   = array();
 
 	/**
 	 * コンストラクタ
@@ -18,6 +19,8 @@ class PageController extends Controller
 		parent::__construct ( $action );
 		if ( count( $this->_loadJavaScriptFile ) > 0 )
 			$this->setData( '_header_loadJS_', $this->_loadJavaScriptFile );
+		if ( count( $this->_internalParams ) > 0 )
+			$this->setData( '_internal_params_', $this->_internalParams );
 		Template::show( $this->_template, $this->_datum );
 	}
 
@@ -37,9 +40,23 @@ class PageController extends Controller
 		$this->setData( '_header_title_', $title );
 	}
 
+	/**
+	 * シグネチャを設定する
+	 * @params string $signatureName
+	 * @params string $signatureBase
+	 */
 	public function setSignature ( $signatureName, $signatureBase ) {
 		$signature = getSignature( $signatureName, $signatureBase );
 		$this->setData( '_footer_signature_', $signature );
+	}
+
+	/**
+	 * インターナルパラメータを設定する
+	 * @params string $paramName
+	 * @params string $paramsValue
+	 */
+	public function setInternalParams ( $paramName, $paramsValue ) {
+		$this->_internalParams[$paramName] = $paramsValue;
 	}
 
 	/**

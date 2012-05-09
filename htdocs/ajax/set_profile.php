@@ -9,6 +9,7 @@ new AjaxController(function($self){
 	$dao = MemberUpdateDAO::getInstance();
 	$facebook = FacebookAPI::getInstance();
 	$updateFlag = false;
+
 	try {
 		$facebookId = $facebook->getFacebookId();
 		if ( !Validate::isValidFacebookId( $facebookId ) )
@@ -48,7 +49,7 @@ new AjaxController(function($self){
 			$memberPR = ( isset($fbUserProfile['bio'] ) ) ? $fbUserProfile['bio'] : '';
 			$res = $dao->updateMemberPR( $memberId, $memberPR );
 			if ( !$res ) throw new Exception( 'Update member_pr error['.$memberPR.']' );
-			$self->setData( 'member_pr', $memberPR );
+			$self->setData( 'member_pr', html( $memberPR ) );
 			$updateFlag = true;
 		}
 
@@ -72,6 +73,15 @@ new AjaxController(function($self){
 		} else {
 			$self->setData( 'result', 'NG' );
 		}
+	} catch( FacebookApiException $fae ) {
+		Logger::debug( 'set_profile', $fae->getMessage() );
+		$self->setData( 'error', 'Facebook login error.' );
+		return;
+	} catch( RuntimeException $re ) {
+		Logger::debug( 'set_profile', $re->getMessage() );
+		$self->setData( 'error', 'Input error.' );
+		return;
+	} catch( PDOException $pe ) {
 	} catch ( Exception $e ) {
 		Logger::error( 'set_profile', $e->getMessage() );
 		throw $e;
