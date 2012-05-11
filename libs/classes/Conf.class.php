@@ -24,6 +24,16 @@ class Conf
 	const JA_SAVE_BUTTON   = '保存';
 	const JA_FACEBOOK_SYNC = 'Facebookと同期';
 
+	const MEMBER_DB_MST_DSN = 'mysql:dbname=comeet;host=localhost';
+	const MEMBER_DB_BAK_DSN = 'mysql:dbname=comeet;host=localhost';
+	const MEMBER_DB_SLV_DSN = 'mysql:dbname=comeet;host=localhost';
+	const MEMBER_DB_USER    = 'comeet';
+	const MEMBER_DB_PSWD    = 'pESg1LGM';
+
+	const FACEBOOK_ID_NODE     = 'facebook-id';
+	const FACEBOOK_IMAGE_URL_S = '//graph.facebook.com/%s/picture?type=square';
+	const DEFAULT_IMAGE_URL    = '/shared/images/dummy.jpg';
+
 	/**
 	 * 活動場所ID
 	 */

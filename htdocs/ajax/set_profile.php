@@ -63,8 +63,26 @@ new AjaxController(function($self){
 				$res = $dao->replaceProfileTag( $memberId, $profileTags );
 				if ( !$res ) throw new Exception( 'Update profileTags error['.var_export($profileTags,true).']' );
 				$self->setData( 'profile_tags', $profileTags );
+				$updateFlag = true;
 			} else {
 				throw new Exception( 'ProfileTags are empty!' );
+			}
+		}
+
+		if ( isset( $profile['company_info'] ) ) {
+			if ( is_array( $profile['company_info'] ) && count( $profile['company_info'] ) > 0 ) {
+
+				$res = $dao->replaceCompanyInfo( $memberId, $profile['company_info'] );
+				if ( !$res ) throw new Exception( 'Update companyInfo error['.var_export($profile['company_info'],true).']' );
+
+				foreach ( $profile['company_info'] as $key => $companyInfo ){
+					$self->setData( 'company_name'.$key, $companyInfo['name'] );
+					$self->setData( 'company_url'.$key,  $companyInfo['url'] );
+					$self->setData( 'company_tel'.$key,  $companyInfo['tel'] );
+				}
+				$updateFlag = true;
+			} else {
+				throw new Exception( 'CompanyInfo are empty!' );
 			}
 		}
 

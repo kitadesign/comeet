@@ -54,6 +54,9 @@ class AjaxController extends Controller
 			$output = $this->_getOutputJson( $datum );
 			break;
 		}
+		header( 'pragma: no-cache' );
+		header( 'cache-control: no-cache' );
+		header( 'expires: 0' );
 		echo( $output );
 	}
 
@@ -99,6 +102,7 @@ class AjaxController extends Controller
 	 * JSON形式のデータを取得する
 	 */
 	private function _getOutputJson ( $datum ) {
+		header( 'Content-Type: text/javascript; charset=utf-8' );
 		return json_encode( $datum );
 	}
 }

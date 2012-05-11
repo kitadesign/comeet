@@ -105,6 +105,10 @@ h2.txtHead span {
 	position: static;
 }
 
+.friends #wrapper {
+	bottom: 95px;
+}
+
 
 /* main
 -------------------------------------------------- */
@@ -121,6 +125,7 @@ h2.txtHead span {
 
 #scroller {
 	width: 100%;
+	min-height: 200px;
 }
 
 /* selectedArea
@@ -138,6 +143,7 @@ ul.selectedList {
 	display: table;
 	width: 100%;
 	border-top: 1px solid #666;
+	background-color: #ffffff;
 }
 
 ul.selectedList a {
@@ -321,6 +327,28 @@ ul.selectedList li .text{
 	display: block;
 }
 
+/* TODO: SaveButton */
+.local-header .headerLinkSave {
+	display: none;
+	padding: 4px 10px 3px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	border: 1px solid #b1b1b1;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background: #f6f6f6;
+	-webkit-box-shadow: inset 0 -15px #e2e2e2;
+	font-size: 12px;
+}
+.local-header .headerLinkSave a {
+	color: #4b92da;
+	text-decoration: none;
+	font-weight: bold;
+	display: block;
+}
+
+
 /* formBox
 -------------------------------------------------- */
 
@@ -362,6 +390,10 @@ ul.selectedList li .text{
 	display: block;
 	text-align: center;
 	line-height: 1.2;
+}
+
+.formBtn.disable a {
+	color: #aaa;
 }
 
 .formLeftBtn a {
@@ -659,8 +691,12 @@ ul.selectedList li .text{
 	padding-right: 10px;
 }
 
+.pickupList li .text {
+	width: 100%;
+}
 .pickupList li .formBox {
-	padding-left: 10px;
+	padding: 0 10px;
+	text-align: right;
 	vertical-align: middle;
 }
 

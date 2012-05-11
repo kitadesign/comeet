@@ -1,13 +1,13 @@
 	<div id="menu" style="display:none;">
 		<div class="ownerName">
-			<div class="image"><img src="https://graph.facebook.com/<?php echo( $facebook_id ); ?>/picture?type=square" alt="" width="35" height="35"></div>
+			<div class="image"><img src="//graph.facebook.com/<?php echo( $facebook_id ); ?>/picture?type=square" alt="" width="35" height="35"></div>
 			<div class="text">
 				<p><?php echo($member_name); ?></p>
 			</div>
 		<!-- /ownerName --></div>
 		<dl class="menuList">
 			<dt>皆が推奨する取締役が見つかります。</dt>
-			<dd><a id="menu_meet_feed" href="#/main">Meet Feed</a></dd>
+			<dd><a id="menu_meet_feed" href="#/meetfeed">Meet Feed</a></dd>
 			<dt>相談・商談内容を設定して下さい。</dt>
 			<dd><a id="menu_meet_setting" href="#/mtgsetting">Meet Setting</a></dd>
 <?php //if( $like_count > 0 ) { ?>
@@ -15,7 +15,10 @@
 			<dd><a id="menu_friend" href="#/friend">推奨取締役</a></dd>
 <?php //} ?>
 			<dt>貴方の情報を更新して下さい。</dt>
-			<dd><a id="menu_profile" href="#/prifile">Profile</a></dd>
+			<dd><a id="menu_profile" href="#/profile">プロフィール</a></dd>
+			<dt></dt>
+			<dd><a href="/logout.php">ログアウト</a></dd>
+<!--			<dd><a href="#/prifile">言語</a></dd> -->
 <!--			<dd><a href="#/company">企業情報</a></dd> -->
 		<!-- /ownerName --></dl>
 	<!-- /menu --></div>

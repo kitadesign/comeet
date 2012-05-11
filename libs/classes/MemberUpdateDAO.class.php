@@ -156,7 +156,7 @@ class MemberUpdateDAO extends MemberDAO
 	/**
 	 * 推奨取締役の登録する
 	 */
-	public function updateMemberLikeByFacebookId ( $memberId, $facebookIds ) {
+	public function updateMemberLikeByFacebookIds ( $memberId, $facebookIds ) {
 		try {
 			$this->begin();
 			$sql = 'DELETE FROM member_like WHERE `from_member_id` = ' . self::BIND_FROM_MEMBER_ID . ';';
@@ -258,9 +258,9 @@ class MemberUpdateDAO extends MemberDAO
 				$this->update( $sql, array(
 					self::BIND_MEMBER_ID    => $memberId,
 					self::BIND_PRIORITY     => $key,
-					self::BIND_COMPANY_NAME => $companyInfo['companyName'],
-					self::BIND_COMPANY_URL  => $companyInfo['companyUrl'],
-					self::BIND_COMPANY_TEL  => $companyInfo['companyTel'],
+					self::BIND_COMPANY_NAME => $companyInfo['name'],
+					self::BIND_COMPANY_URL  => $companyInfo['url'],
+					self::BIND_COMPANY_TEL  => $companyInfo['tel'],
 				) );
 			}
 			$this->commit();

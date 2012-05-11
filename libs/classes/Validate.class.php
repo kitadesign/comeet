@@ -40,6 +40,17 @@ class Validate
 
 	public static function isValidMeetingTags ( $values ) {
 		if ( !is_array( $values ) ) return false;
+		if ( count($values) > 3 ) return false;
+		foreach ( $values as $value ) {
+			if ( empty( $value ) ) continue;
+			if ( mb_strlen( $value, INTERNAL_ENCODING ) > 50 ) return false;
+		}
+		return true;
+	}
+
+	public static function inValidFriends ( $values ) {
+		if ( !is_array( $values ) ) return false;
+		if ( count($values) > 3 ) return false;
 		foreach ( $values as $value ) {
 			if ( empty( $value ) ) continue;
 			if ( mb_strlen( $value, INTERNAL_ENCODING ) > 50 ) return false;

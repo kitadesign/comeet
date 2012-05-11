@@ -32,6 +32,15 @@ new AjaxController(function($self){
 		foreach ( $profileTags as $key => $profileTag ) {
 			$self->setData( 'profile_tag' . ($key + 1), $profileTag );
 		}
+
+		$company = $dao->getMemberCompanyForDetail( $memberId, array(0) );
+		if ( count($company) > 0 ) {
+			foreach ( $company as $key => $companyInfo ) {
+				$self->setData( 'company_name'.$key, $companyInfo->company_name );
+				$self->setData( 'company_url'.$key,  $companyInfo->company_url );
+				$self->setData( 'company_tel'.$key,  $companyInfo->company_tel );
+			}
+		}
 	} catch ( Exception $e ) {
 		Logger::error( __METHOD__, $e->getMessage() );
 		throw $e;

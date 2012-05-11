@@ -42,7 +42,7 @@ class FacebookAPI
 	 * 友人一覧を取得する
 	 */
 	public function getFriends () {
-		return $this->_facebook->api('/me/friendlists');
+		return $this->_facebook->api('/me/friends');
 	}
 
 	/**
@@ -58,8 +58,12 @@ class FacebookAPI
 	public function getLoginUrl () {
 		$params = array(
 			'scope' => 'publish_stream,read_friendlists,user_about_me,user_online_presence,offline_access'
-//			'scope' => 'publish_stream,read_friendlists,user_about_me,user_online_presence'
 		);
+		return $this->_facebook->getLoginUrl( $params );
+	}
+
+	public function getLogoutUrl () {
+		$params = array( 'next' => REQUEST_URL . '/login.php' );
 		return $this->_facebook->getLoginUrl( $params );
 	}
 }

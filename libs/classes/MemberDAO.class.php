@@ -50,11 +50,11 @@ class MemberDAO extends LogDAO
 	 * コンストラクタ 接続情報の設定
 	 */
 	public function __construct(){
-		$this->_DB_MST_DSN = 'mysql:dbname=comeet;host=localhost';
-		$this->_DB_BAK_DSN = 'mysql:dbname=comeet;host=localhost';
-		$this->_DB_SLV_DSN = 'mysql:dbname=comeet;host=localhost';
-		$this->_DB_USER    = 'comeet';
-		$this->_DB_PAWD    = 'pESg1LGM';
+		$this->_DB_MST_DSN = Conf::MEMBER_DB_MST_DSN;
+		$this->_DB_BAK_DSN = Conf::MEMBER_DB_BAK_DSN;
+		$this->_DB_SLV_DSN = Conf::MEMBER_DB_SLV_DSN;
+		$this->_DB_USER    = Conf::MEMBER_DB_USER;
+		$this->_DB_PAWD    = Conf::MEMBER_DB_PSWD;
 	}
 
     /**
@@ -66,6 +66,27 @@ class MemberDAO extends LogDAO
 		if ( !isset( $res->member_id ) ) return false;
         return $res->member_id;
     }
+
+	/**
+	 * MemberIdを元にFacebookIdを取得する
+	 */
+	public function getFacebookId ( $memberId ) {
+        $sql = 'SELECT facebook_id FROM member WHERE member_id = ' . self::BIND_MEMBER_ID . ';';
+        $res = $this->queryRow( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
+		if ( !isset( $res->facebook_id ) ) return false;
+        return $res->facebook_id;
+	}
+
+	/**
+	 * FacebookIdsからMemberIdsを取得する
+	 */
+	public function getMembersByFacebookIds ( $facebookIds ) {
+		if ( !is_array( $facebookIds ) || count( $facebookIds ) == 0 ) return array();
+        $sql = 'SELECT member_id, facebook_id FROM member WHERE facebook_id in ('.implode( ',', $facebookIds ).');';
+        $res = $this->queryAll( $sql );
+		if ( empty( $res ) ) return array();
+		return $res;
+	}
 
     /**
      * 登録されている推奨取締役人数
@@ -86,6 +107,24 @@ class MemberDAO extends LogDAO
         if ( !isset( $res->COUNT ) ) return 0;
         return $res->COUNT;
     }
+
+    /**
+     * メンバーの推奨人数を取得する
+     */
+	public function getMemberLikeCountByMemberIds ( $memberIds ) {
+		if ( !is_array( $memberIds ) || count( $memberIds ) == 0 ) return array();
+		$sql = 'SELECT to_member_id, COUNT(from_member_id) AS COUNT FROM member_like WHERE to_member_id IN (' . implode( ',',$memberIds ) . ') GROUP BY to_member_id;';
+        $res = $this->queryAll( $sql );
+
+		$arr = array();
+		if ( !empty( $res ) )
+			foreach ( $res as $data ) $arr[$data->to_member_id] = $data->COUNT;
+
+		if ( count( $arr ) != count( $memberIds ) )
+			foreach ( $memberIds as $memberId ) if ( !isset( $arr[$memberId] ) ) $arr[$memberId] = 0;
+
+		return $arr;
+	}
 
     /**
      * 活動場所の同じ自分以外の取締役の人数
@@ -137,6 +176,7 @@ class MemberDAO extends LogDAO
         $sql = 'SELECT key_number, tag_text, enable_flg FROM member_mtg_tag WHERE member_id = ' . self::BIND_MEMBER_ID . $plus_where . ' ORDER BY key_number;';
         $res = $this->queryAll( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
         if ( empty( $res ) ) return array();
+        if( $enable_flg !== false ) return $res[0];
         $arr = array();
         foreach( $res as $key => $row ){
             $arr[$key]['number']   = $row->key_number;
@@ -150,9 +190,9 @@ class MemberDAO extends LogDAO
      * リストに表示するプロフィール情報を取得する
      */
     public function getMemberProfileForList ( $memberIds ) {
-        if( !is_array($memberIds) || count($memberIds) == 0 ) return array();
-        $sql = 'SELECT member_id, mtg_profile member_name FROM member_profile WHERE member_id IN (?);';
-        $res = $this->queryAll( $sql, array( 1 => implode(',', $memberIds) ) );
+        if( !is_array( $memberIds ) || empty( $memberIds ) == 0 ) return array();
+        $sql = 'SELECT member_id, mtg_profile member_name FROM member_profile WHERE member_id IN ('. implode( ',', $memberIds ) .');';
+        $res = $this->queryAll( $sql );
         if ( empty( $res ) ) return array();
         return $res;
     }
@@ -170,13 +210,10 @@ class MemberDAO extends LogDAO
     /**
      * 詳細ページに表示する企業情報を取得する
      */
-    public function getMemberCompanyForDetail ( $memberId, $priority ) {
+	public function getMemberCompanyForDetail ( $memberId, $priority ) {
         if( !is_array($priority) || count($priority) == 0 ) return array();
-        $sql = 'SELECT priority, company_name, company_url, company_tel FROM member_company WHERE member_id = ' . self::BIND_MEMBER_ID . ' AND priority IN (?) ORDER BY priority;';
-        $res = $this->queryAll( $sql, array(
-            self::BIND_MEMBER_ID => $memberId,
-            1 => implode(',', $priority),
-        ) );
+		$sql = 'SELECT priority, company_name, company_url, company_tel FROM member_company WHERE member_id = ' . self::BIND_MEMBER_ID . ' AND priority IN ('.implode( ',', $priority ).') ORDER BY priority;';
+		$res = $this->queryAll( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
         if ( empty( $res ) ) return array();
         return $res;
     }
@@ -199,13 +236,47 @@ class MemberDAO extends LogDAO
      * 推奨している取締役一覧を取得する
      */
     public function getMemberLikeFromMe ( $memberId ) {
-        $sql = 'SELECT to_member_id FROM member_like WHERE from_member_id = ' . self::BIND_FROM_MEMBER_ID . ';';
+        $sql = 'SELECT to_member_id, to_facebook_id FROM member_like WHERE from_member_id = ' . self::BIND_FROM_MEMBER_ID . ';';
         $res = $this->queryAll( $sql, array( self::BIND_FROM_MEMBER_ID => $memberId ) );
         if ( empty( $res ) ) return array();
-        $arr = array();
-        foreach( $res as $row ){
-            $arr[] = $row->to_member_id;
-        }
-        return $arr;
+        return $res;
     }
+
+	/**
+	 * MeetFeedを取得する
+	 * @params Int $memberId
+	 * @params Int $type
+	 */
+	public function getMeetFeed ( $memberId, $type = 0 ) {
+		$locationIds = $this->getLocationIdByMemberId( $memberId );
+		if ( count( $locationIds ) == 0 ) return array();
+
+		$meetingTag = $this->getMeetingTags( $memberId, true );
+		if ( empty( $meetingTag ) ) return array();
+		if ( is_array( $meetingTag ) ) return array();
+
+		$sql = 'SELECT DISTINCT member_id FROM member_profile_tag WHERE tag_text = '.self::BIND_TAG_TEXT.';';
+		$profileTagInfos = $this->queryAll( $sql, array( self::BIND_TAG_TEXT => $meetingTag->tag_text ) );
+		if ( empty( $profileTagInfos ) ) return array();
+		$profileTagMember = array();
+		foreach ( $profileTagInfos as $profileTagInfo ) $profileTagMember[$profileTagInfo->member_id] = $profileTagInfo->member_id;
+
+		$sql = 'SELECT DISTINCT member_id FROM member_local WHERE location_id IN ('.implode( ',', $locationIds ).');';
+		$localInfos = $this->queryAll( $sql );
+		if ( empty( $localInfos ) ) return array();
+
+		$meetMembers = array();
+		foreach ( $localInfos as $localInfo ) {
+			if ( isset( $profileTagMember[$localInfo->member_id] ) ) $meetMembers[] = $localInfo->member_id;
+		}
+		if ( empty( $meetMembers ) ) return array();
+
+		$sql = 'SELECT DISTINCT to_member_id FROM member_like WHERE to_member_id IN ('.implode( ',', $meetMembers ).');';
+		$likeInfos = $this->queryAll( $sql );
+		if ( empty( $likeInfos ) ) return array();
+
+		$meetLikeMemberIds = array();
+		foreach ( $likeInfos as $likeInfo ) $meetLikeMemberIds[] = $likeInfo->to_member_id;
+		return $this->getMemberProfileForList( $meetLikeMemberIds );
+	}
 }

@@ -1,5 +1,5 @@
 <section>
-<p class="textboxCtrl_010 title">Likeされている人数：<%= data.like_count %>人</p>
+	<p class="textboxCtrl_010 title">Likeされている人数：<%= data.like_count %>人</p>
 	<hr class="hr">
 </section>
 <section class="textboxCtrl_010 editSection" id="editName">
@@ -20,7 +20,7 @@
 	<p class="changeMarginBottom10 text"><% if ( data.member_pr ) { %><%- data.member_pr %><% } %></p>
 <!-- /textboxCtrl_010 --></section>
 
-<section class="textboxCtrl_010 editSection lasteditSection" id="editProfileTags">
+<section class="textboxCtrl_010 editSection" id="editProfileTags">
 	<h2 class="txtHead">プロフィールタグ</h2>
 	<p>自身の仕事、人生に対するタグを3つまで設定できます。</p>
 	<p class="editBtn"><a href="#">編集</a></p>
@@ -29,4 +29,18 @@
 		<li><% if ( data.profile_tag2 ) { %><%- data.profile_tag2 %><% } %></li>
 		<li><% if ( data.profile_tag3 ) { %><%- data.profile_tag3 %><% } %></li>
 	</ul>
+<!-- /textboxCtrl_010 --></section>
+
+<section class="textboxCtrl_010 editSection lasteditSection" id="editCompanyInfo">
+	<h2 class="txtHead">一番注力している会社情報</h2>
+	<p class="editBtn"><a href="#">編集</a></p>
+	<p class="changeMarginBottom10 text">
+		社名：<span class="companyName0"><% if ( data.company_name0 ) { %><%- data.company_name0 %><% } %></span>
+	</p>
+	<p class="changeMarginBottom10 text">
+		URL：<span class="companyUrl0"><% if ( data.company_url0 ) { %><%- data.company_url0 %><% } %></span>
+	</p>
+	<p class="changeMarginBottom10 text">
+		TEL：<span class="companyTel0"><% if ( data.company_tel0 ) { %><%- data.company_tel0 %><% } %></span>
+	</p>
 <!-- /textboxCtrl_010 --></section>

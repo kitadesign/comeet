@@ -1,9 +1,13 @@
 (function(){
 	function loaded () {
 		executeIScroll();
+		setTimeout( function() {
+			window.scrollTo(0, 1);
+		}, 100 );
 	}
 	document.addEventListener( 'DOMContentLoaded', loaded, false );
 })();
+
 var myScroll;
 function executeIScroll () {
 	var scroller = document.getElementById('scroller');
@@ -40,8 +44,6 @@ function getTemplate ( key, params ) {
 function getInternalParams ( key ) {
 	if ( key == '' ) return;
 	var $internalParams = $( '#internal_params' );
-	console.log( key );
-	console.log( $internalParams.data( key ) );
 	return $internalParams.data( key );
 }
 
@@ -59,6 +61,9 @@ function callJsonRpc ( url, params, callback ) {
 		},
 		error: function(xhr, type){
 			console.log(arguments);
+			if ( !xhr.status ) {
+				alert('Network Error.');
+			}
 			callback( false, xhr );
 		}
 	});

@@ -16,6 +16,7 @@ body {
 	text-align: left;
 	min-width: 320px;
 	-webkit-text-size-adjust: none;
+	min-height: 50px;
 }
 
 body h1 {
@@ -40,11 +41,6 @@ body#fixed .main {
 	z-index: 1;
 	width: 100%;
 }
-
-body#fixed  #wrapper {
-	bottom: 95px;
-}
-
 
 /* link
 -------------------------------------------------- */

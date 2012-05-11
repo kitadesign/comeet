@@ -21,7 +21,7 @@ new AjaxController(function($self){
 		}
 
 		// TODO: MeetFeed取得
-		$meetfeed = array();
+		$meetfeed = $dao->getMeetFeed( $memberId );
 		$self->setData( 'meetfeed', $meetfeed );
 	} catch ( Exception $e ) {
 		Logger::error( 'get_meetfeed', $e->getMessage() );

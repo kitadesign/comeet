@@ -15,6 +15,9 @@ define( 'LOGS_DIR', dirname($dir) . DS . 'logs' . DS );
 // Set up application.
 date_default_timezone_set('Asia/Tokyo');
 require_once( LIBS_DIR . 'functions.php' );
+$head   = ( isset( $_SERVER['HTTPS'] ) ) ? 'https://' : 'http://' ;
+$domain = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'] ;
+define( 'REQUEST_URL', $head.$domain );
 
 // Charset UTF-8
 ini_set( 'mbstring.language', 'Japanese' );

@@ -49,11 +49,14 @@ new PageController(function($self){
 	}
 	$self->setJavaScript( 'index' );
 	$self->setSignature( 'memberId', $memberId );
-	$self->setInternalParams( 'member_id', $memberId );
-	$self->setInternalParams( 'facebook_id', $facebookId );
+	$self->setInternalParams( 'member-id', $memberId );
+	$self->setInternalParams( 'facebook-id', $facebookId );
 	$self->setInternalParams( 'edit-button', Conf::JA_EDIT_BUTTON );
 	$self->setInternalParams( 'save-button', Conf::JA_SAVE_BUTTON );
 	$self->setInternalParams( 'facebook-sync', Conf::JA_FACEBOOK_SYNC );
+	$self->setInternalParams( 'image-url-s', Conf::FACEBOOK_IMAGE_URL_S );
+	$self->setInternalParams( 'default-image-url', Conf::DEFAULT_IMAGE_URL );
+	$self->setInternalParams( 'node-name', Conf::FACEBOOK_ID_NODE );
 	$self->setTemplate( 'index' );
 });
 ?>

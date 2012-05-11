@@ -81,7 +81,7 @@ abstract class BaseDAO
         foreach ( $values as $key => $value ) {
 			if ( is_numeric( $value ) ) {
                 $stmt->bindValue( $key, $value, PDO::PARAM_INT );
-            } else {
+			} else {
                 $stmt->bindValue( $key, $value, PDO::PARAM_STR );
             }
         }
@@ -151,4 +151,15 @@ abstract class BaseDAO
     protected function rollback () {
         $this->getMasterDB()->rollBack();
     }
+
+    /**
+     * SQLをクオートする
+     */
+	protected function quote ( $string, $mode = 's' ) {
+		if ($mode == 's') {
+			return $this->getSlaveDB()->quote( $string );
+		} else {
+			return $this->getMasterDB()->quote( $string );
+		}
+	}
 }
