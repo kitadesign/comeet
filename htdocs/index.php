@@ -26,11 +26,6 @@ new PageController(function($self){
 			return;
 		}
 
-		// TODO: MeetFeed取得
-		$list = array();
-		$self->setData( 'meet_count', count( $list ) );
-		$self->setData( 'meet_list', $list );
-
 		$profile = $dao->getMemberProfileForDetail( $memberId );
 		if ( empty( $profile ) ){
 			// TODO: 本来エラーの挙動なのでErrorにしてしまっていいのでは？
@@ -53,10 +48,17 @@ new PageController(function($self){
 	$self->setInternalParams( 'facebook-id', $facebookId );
 	$self->setInternalParams( 'edit-button', Conf::JA_EDIT_BUTTON );
 	$self->setInternalParams( 'save-button', Conf::JA_SAVE_BUTTON );
+	$self->setInternalParams( 'meet-now-button', Conf::JA_MEET_NOW_BUTTON );
 	$self->setInternalParams( 'facebook-sync', Conf::JA_FACEBOOK_SYNC );
 	$self->setInternalParams( 'image-url-s', Conf::FACEBOOK_IMAGE_URL_S );
 	$self->setInternalParams( 'default-image-url', Conf::DEFAULT_IMAGE_URL );
 	$self->setInternalParams( 'node-name', Conf::FACEBOOK_ID_NODE );
+	$self->setInternalParams( 'toast-save-label', Conf::TOAST_SAVED );
+	$self->setInternalParams( 'toast-not-save-label', Conf::TOAST_NOT_SAVE );
+	$self->setInternalParams( 'toast-server-error-label', Conf::TOAST_SERVER_ERROR );
+	$self->setInternalParams( 'toast-not-get-label', Conf::TOAST_NOT_GET );
+	$self->setInternalParams( 'toast-not-connect-label', Conf::TOAST_NOT_CONNECT );
+	$self->setInternalParams( 'toast-request-meet-now-label', Conf::TOAST_REQUEST_MEET_NOW );
 	$self->setTemplate( 'index' );
 });
 ?>

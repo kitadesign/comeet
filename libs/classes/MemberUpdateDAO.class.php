@@ -7,20 +7,20 @@
 class MemberUpdateDAO extends MemberDAO
 {
 
-    /**
-     * インスタンス変数
-     */
-    private static $_instance = null;
+	/**
+	 * インスタンス変数
+	 */
+	private static $_instance = null;
 
-    /**
-     * DAOのインスタンスをシングルトンで取得する
-     */
-    public static function getInstance () {
-        if( !isset( self::$_instance ) ) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
+	/**
+	 * DAOのインスタンスをシングルトンで取得する
+	 */
+	public static function getInstance () {
+		if( !isset( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
 
 	/**
 	 * Facebookユーザを元に新規メンバーを登録する
@@ -68,6 +68,8 @@ class MemberUpdateDAO extends MemberDAO
 				self::BIND_MEMBER_ID   => $memberId,
 				self::BIND_LOCATION_ID => $locationId,
 			) );
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_LOCATION_ID, $memberId ) );
 			return true;
 		} catch ( PDOException $e ) {
 			return false;
@@ -98,8 +100,12 @@ class MemberUpdateDAO extends MemberDAO
 					) );
 				}
 			}
-			
 			$this->commit();
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_MEETING_TAG, $memberId, 0 ) );
+			$cache->remove( sprintf( self::CACHE_KEY_MEETING_TAG, $memberId, 1 ) );
+
 			return true;
 		} catch ( PDOException $e ) {
 			$this->rollback();
@@ -117,6 +123,9 @@ class MemberUpdateDAO extends MemberDAO
 				self::BIND_MTG_PROFILE => $mtgProfile,
 				self::BIND_MEMBER_ID   => $memberId,
 			) );
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_PROFILE, $memberId ) );
 			return true;
 		} catch ( PDOException $e ) {
 			return false;
@@ -146,6 +155,9 @@ class MemberUpdateDAO extends MemberDAO
 				) );
 			}
 			$this->commit();
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_LOCATION_ID, $memberId ) );
 			return true;
 		} catch ( PDOExceiton $e ) {
 			$this->rollback();
@@ -187,6 +199,9 @@ class MemberUpdateDAO extends MemberDAO
 				self::BIND_MEMBER_ID   => $memberId,
 				self::BIND_MEMBER_NAME => $memberName,
 			) );
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_PROFILE, $memberId ) );
 			return true;
 		} catch ( PDOException $e ) {
 			return false;
@@ -208,6 +223,10 @@ class MemberUpdateDAO extends MemberDAO
 				) );
 			}
 			$this->commit();
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_PROFILE_TAG, $memberId ) );
+
 			return true;
 		} catch ( PDOException $e ) {
 			$this->rollback();
@@ -225,6 +244,9 @@ class MemberUpdateDAO extends MemberDAO
 				self::BIND_MEMBER_ID             => $memberId,
 				self::BIND_COMPANY_EMAIL_ADDRESS => $companyEmailAddress,
 			) );
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_PROFILE, $memberId ) );
 			return true;
 		} catch ( PDOException $e ) {
 			return false;
@@ -241,6 +263,9 @@ class MemberUpdateDAO extends MemberDAO
 				self::BIND_MEMBER_ID => $memberId,
 				self::BIND_MEMBER_PR => $memberPR,
 			) );
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_PROFILE, $memberId ) );
 			return true;
 		} catch ( PDOException $e ) {
 			return false;
@@ -264,6 +289,7 @@ class MemberUpdateDAO extends MemberDAO
 				) );
 			}
 			$this->commit();
+
 			return true;
 		} catch ( PDOException $e ) {
 			$this->rollback();
@@ -291,11 +317,11 @@ class MemberUpdateDAO extends MemberDAO
 	/**
 	 * すぐに！対応で既読を登録する
 	 */
-	public function updateActionLead ( $fromMemberId ) {
+	public function updateActionLead ( $toMemberId ) {
 		try {
-			$sql = 'UPDATE action_now_history SET `read_flg` = 1 WHERE `from_member_id` = ' . self::BIND_FROM_MEMBER_ID . ';';
+			$sql = 'UPDATE action_now_history SET `read_flg` = 1 WHERE `from_member_id` = ' . self::BIND_TO_MEMBER_ID . ';';
 			$this->update( $sql, array(
-				self::BIND_FROM_MEMBER_ID => $fromMemberId,
+				self::BIND_TO_MEMBER_ID => $toMemberId,
 			) );
 			return true;
 		} catch ( PDOException $e ) {

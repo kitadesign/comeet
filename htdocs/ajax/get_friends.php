@@ -41,7 +41,7 @@ new AjaxController(function($self){
 			}
 		}
 
-		uasort( $fbFriends, function ( $a, $b ) {
+		usort( $fbFriends, function ( $a, $b ) {
 			if ( isset( $a['member_id'] ) && isset( $b['member_id'] ) ) 
 				return ( $a['like_count'] < $b['like_count'] ) ? 1 : -1;
 			if ( isset( $a['member_id'] ) ) return -1;

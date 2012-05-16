@@ -105,4 +105,16 @@ class AjaxController extends Controller
 		header( 'Content-Type: text/javascript; charset=utf-8' );
 		return json_encode( $datum );
 	}
+
+	/**
+	 * バリデーションエラー
+	 */
+	protected function badRequestError () {
+		$output = ob_get_contents();
+		ob_end_clean();
+		if ( !empty( $output ) ) error_log( $output );
+
+		header( 'HTTP/1.0 400 Bad Request' );
+		exit();
+	}
 }

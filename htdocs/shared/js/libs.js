@@ -1,12 +1,14 @@
 (function(){
 	function loaded () {
-		executeIScroll();
-		setTimeout( function() {
-			window.scrollTo(0, 1);
-		}, 100 );
+//		executeIScroll();
 	}
 	document.addEventListener( 'DOMContentLoaded', loaded, false );
 })();
+window.onload = function () {
+	setTimeout( function() {
+		window.scrollTo(0, 1);
+	}, 100 );
+};
 
 var myScroll;
 function executeIScroll () {
@@ -21,7 +23,7 @@ function executeIScroll () {
 		onBeforeScrollStart: function (e) {
 			var target = e.target;
 			while (target.nodeType != 1) target = target.parentNode;
-			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA' && target.tagName != 'A')
 				e.preventDefault();
 		}
 	});
@@ -49,11 +51,12 @@ function getInternalParams ( key ) {
 
 // Call RPC to Server By JSON data
 function callJsonRpc ( url, params, callback ) {
+	var unixtime = getUnixTime();
 	$.ajax({
 		type: 'POST',
 		dataType: 'json',
 		timeout: 10000,
-		url: '/'+url,
+		url: '/'+url+'?'+unixtime,
 		data: params,
 		success: function ( data ) {
 			console.log(arguments);
@@ -61,31 +64,30 @@ function callJsonRpc ( url, params, callback ) {
 		},
 		error: function(xhr, type){
 			console.log(arguments);
-			if ( !xhr.status ) {
-				alert('Network Error.');
-			}
 			callback( false, xhr );
 		}
 	});
 }
 
+var $_loadingImg = $(document.createElement('img'));
+$_loadingImg.attr( 'src', '/shared/images/ajax-loader.gif' );
+$_loadingImg.attr( 'width', '16px' );
+$_loadingImg.attr( 'height', '11px' );
+var $_loadingImgDiv = $(document.createElement('span'));
+$_loadingImgDiv.addClass('loadingImage');
+$_loadingImgDiv.append($_loadingImg);
 function getLoadingImage () {
-	var $img = $(document.createElement('img'));
-	$img.attr( 'src', '/shared/images/ajax-loader.gif' );
-	$img.attr( 'width', '16px' );
-	$img.attr( 'height', '11px' );
-
-	var $div = $(document.createElement('span'));
-	$div.addClass('loadingImage');
-	$div.append($img);
-	return $div;
+	return $_loadingImgDiv.clone();
 }
 
 function getInputText ( text, size ) {
-	var $input = $(document.createElement('input'));
+	var $input = $( document.createElement('input') );
 	$input.attr( 'type', 'text' );
 	$input.attr( 'size', size );
 	$input.attr( 'value', text );
+	$input.on( 'focus', function ( event ) {
+		event.stopPropagation();
+	} );
 	return $input;
 }
 
@@ -93,6 +95,9 @@ function getTextArea ( text, rows, cols ) {
 	var $textarea = $(document.createElement('textarea'));
 	$textarea.attr( 'rows', rows );
 	$textarea.attr( 'cols', cols );
+	$textarea.on( 'focus', function ( event ) {
+		event.stopPropagation();
+	} );
 	$textarea.html( convertLineFeed( text, false ) );
 	return $textarea;
 }
@@ -119,6 +124,7 @@ function defineClass () {
 }
 
 function convertLineFeed ( text, flag ) {
+	if ( !text ) return '';
 	if ( flag ) {
 		text = text.replace(/\r\n/g, '<br />');
 		text = text.replace(/(\n|\r)/g, '<br />');
@@ -127,4 +133,36 @@ function convertLineFeed ( text, flag ) {
 		text = text.replace(/<br>/g, "\n");
 	}
 	return text;
+}
+
+var _toastOpenFlag = false;
+var _toastOpenText = '';
+function showToast ( text, mtime ) {
+	if ( _toastOpenFlag ) {
+		if ( _toastOpenText == text ) {
+			return;
+		} else {
+			while( _toastOpenFlag ) {
+				console.log('wait');
+			}
+		}
+	}
+	if ( !mtime ) mtime = 1500;
+	$_toastTemplate = $( getTemplate( 'toast', {text:text} ) );
+	$('#viewport').after( $_toastTemplate );
+	_toastOpenFlag = true;
+	_toastOpenText = text;
+	setInterval( function () {
+		$_toastTemplate.remove();
+		_toastOpenFlag = false;
+		_toastOpenText = '';
+	}, mtime );
+}
+
+function sleep(callback, time){
+	setTimeout(callback, time);
+}
+
+function getUnixTime () {
+	return ~~(new Date/1000);
 }

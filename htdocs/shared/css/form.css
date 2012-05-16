@@ -121,9 +121,9 @@ input[type="tell"] {
 	width: 25%;
 }
 
-/*input[type="text"] {
-	width: 90%;
-}*/
+input[type="text"] {
+	ime-mode: active;
+}
 
 input[type="radio"] {
 	width: auto;

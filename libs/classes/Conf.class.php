@@ -20,9 +20,18 @@ class Conf
 	 */
 	const SIGNATURE_SOLT = 'MJ4MGRQCuofP9YMr';
 
-	const JA_EDIT_BUTTON   = '編集';
-	const JA_SAVE_BUTTON   = '保存';
-	const JA_FACEBOOK_SYNC = 'Facebookと同期';
+	const JA_EDIT_BUTTON     = '編集';
+	const JA_SAVE_BUTTON     = '保存';
+	const JA_FACEBOOK_SYNC   = 'Facebookと同期';
+	const JA_MEET_NOW_BUTTON = 'Meetなう';
+
+	const TOAST_SAVED             = '保存しました';
+	const TOAST_NOT_SAVE          = "保存できませんでした\n入力内容を見直してください";
+	const TOAST_SERVER_ERROR      = "サーバが混雑しているため\n少し時間をあけて再度実行してください";
+	const TOAST_NOT_GET           = "データが取得できませんでした";
+	const TOAST_NOT_CONNECT       = 'サーバと通信できませんでした\n通信環境をお確かめください';
+	const TOAST_REQUEST_MEET_NOW  = "ミーティングを提案しました\nアジェンダを作成して返答をお待ちください";
+	const REQUEST_MEET_NOW_FOR_FB = "%sさんへミーティングを提案します\n返答をお願いします\n\n";
 
 	const MEMBER_DB_MST_DSN = 'mysql:dbname=comeet;host=localhost';
 	const MEMBER_DB_BAK_DSN = 'mysql:dbname=comeet;host=localhost';
@@ -33,6 +42,12 @@ class Conf
 	const FACEBOOK_ID_NODE     = 'facebook-id';
 	const FACEBOOK_IMAGE_URL_S = '//graph.facebook.com/%s/picture?type=square';
 	const DEFAULT_IMAGE_URL    = '/shared/images/dummy.jpg';
+
+	public static $_MEMBER_CACHE_SERVERS = array(
+		'localhost',
+	);
+
+	const CACHE_EXPIRE = 86400; // 1day
 
 	/**
 	 * 活動場所ID

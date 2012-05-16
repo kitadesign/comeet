@@ -46,6 +46,22 @@ class FacebookAPI
 	}
 
 	/**
+	 * 友人へミーティング依頼を出します
+	 */
+	public function requestMeetNow ( $facebookId, $memberName ) {
+		$message = sprintf( Conf::REQUEST_MEET_NOW_FOR_FB . REQUEST_URL, $memberName );
+
+		return $this->_facebook->api(
+			'/me/feed',
+			'post',
+			array(
+				'link' => REQUEST_URL,
+				'message' => $message,
+			)
+		);
+	}
+
+	/**
 	 * メンバーのアクセストークンを取得する
 	 */
 	public function getAccessToken () {
@@ -62,6 +78,9 @@ class FacebookAPI
 		return $this->_facebook->getLoginUrl( $params );
 	}
 
+	/**
+	 * ログアウトURLを取得する
+	 */
 	public function getLogoutUrl () {
 		$params = array( 'next' => REQUEST_URL . '/login.php' );
 		return $this->_facebook->getLoginUrl( $params );

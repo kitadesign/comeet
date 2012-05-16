@@ -1,0 +1,65 @@
+<div class="closeBtn"><a href="javascript:void(0);">閉じる</a></div>
+<section>
+	<ul class="pickupList clearfix">
+		<li>
+			<div class="image"><img src="<%- data.icon %>" alt="" width="50" height="50"></div>
+			<div class="text">
+				<p><span class="pickupName">名前：<%- data.member_name %></span>
+				<% if ( data.company_name ) { %><br><span class="pickupCompany">会社名：
+<% if ( data.company_url ) { %>
+	<a href="<%- data.company_url %>" target="_brank"><%- data.company_name %></a>
+<% } else { %>
+	<%- data.company_name %><% } %></span>
+<% } %>
+				<% if ( data.company_tel ) { %><br><span class="pickupCompany">TEL：<%- data.company_tel %></span><% } %>
+				<% if ( data.member_pr ) { %><br><span class="pickupComment">自己紹介：<%= convertLineFeed( data.member_pr ) %></span><% } %>
+				</p>
+			</div>
+		</li>
+	</ul>
+</section>
+
+<% if ( data.is_like_member ) { %>
+<section class="textboxCtrl_010 editSection lasteditSection">
+	<h2 class="txtHead">この方を推奨している方々</h2>
+	<div class="selectedList02" id="flickable1">
+		<ul class="selectedList" style="width: <%- data.like_count %>00px;">
+	<% _.each( data.like_member, function( value, key ){ %>
+			<li>
+				<div class="image"><img src="<%- value.icon %>" alt="" width="50" height="50"></div>
+				<p class="text"><%- value.member_name %></p>
+			</li>
+	<% } ); %>
+		</ul>
+	</div>
+<% } %>
+
+<% if ( data.mtg_profile ) { %>
+	<h2 class="txtHead">ミーティング内容</h2>
+	<div class="text"><%= convertLineFeed( data.mtg_profile ) %></div>
+<% } %>
+
+<% if ( data.has_profile_tags ) { %>
+	<h2 class="txtHead">プロフィールタグ</h2>
+	<ul class="threeColumn01 borderGray">
+	<% _.each( data.profile_tags, function( value, key ){ %>
+		<li><%- value %></li>
+	<% } ); %>
+	</ul>
+<% } %>
+
+<% if ( data.has_meeting_tags ) { %>
+	<h2 class="txtHead">ミーティングタグ</h2>
+	<ul class="threeColumn01 borderGray">
+	<% _.each( data.meeting_tags, function( value, key ){ %>
+		<li><%- value.text %></li>
+	<% } ); %>
+	</ul>
+<% } %>
+
+	<div class="formBox center">
+		<ul class="formBtn formCenterBtn02 formBtnLarge">
+			<li><a href="javascript:void(0);">Meetなう</a></li>
+		</ul>
+	<!-- /formBox --></div>
+<!-- /textboxCtrl_010 --></section>

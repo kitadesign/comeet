@@ -1,19 +1,35 @@
 <section>
-<% if (data.meetfeed && data.meetfeed.length > 0) { %>
+<% if (data.meetfeed && !_.isEmpty( data.meetfeed ) ) { %>
 	<ul class="pickupList">
-<% _.each(data.meetfeed, function(member) { %>
-		<li>
-		<div class="image"><img src="<%= member.icon %>" alt="" width="50" height="50"></div>
+<% _.each(data.meetfeed, function(member, key) { %>
+		<li id="meetfeed_<%- member.member_id %>" data-member-id="<%- member.member_id %>">
+			<div class="image"><img src="<%= member.icon %>" alt="" width="50" height="50"></div>
 			<div class="text">
-				<p><span class="pickupName">名前；<%= member.name %></span><br>
-					<span class="pickupCompany">会社名：<%= member.company %></span><br>
-					<span class="pickupComment">自己紹介：<%= member.comment %></span>
+	<% if ( data.meet_now ) { %>
+				<p><span>ミーティングの提案があります</span></p>
+	<% } %>
+	<% if ( data.is_like_member ) { %>
+				<p><span class="pickupName">名前；<%= member.member_name %></span><br>
+					<span class="pickupCompany">プロフィールタグ：<%- member.profile_tags %></span>
 				</p>
+	<% } else { %>
+				<p><span class="pickupName">名前；<%= member.member_name %></span><br>
+					<span class="pickupComment"><%= member.member_pr %></span>
+				</p>
+	<% } %>
 			</div>
 		</li>
 <% }); %>
 	</ul>
 <% } else { %>
 	<div class="textboxCtrl_010">MeetFeedは0件です</div>
+	<% if ( data.is_like_member ) { %>
+	<div class="textboxCtrl_010">MeetFeedの表示条件
+		<ul>
+			<li>「活動場所が一致する」</li>
+			<li>「自分のミーティングタグと相手のプロフィールタグが一致する」</li>
+		</ul>
+	</div>
+	<% } %>
 <% } %>
 </section>

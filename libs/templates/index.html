@@ -12,6 +12,7 @@
 					<li><a href="javascript:void(0);">保存</a></li>
 				</ul>
 			</div>
+			<section id="selectedArea" style="display:none;"></section>
 		</header>
 
 		<div id="wrapper">
@@ -26,10 +27,12 @@
 		<!-- /wrapper --></div>
 	<!-- /pageContent --></div>
 <!-- /viewport --></div>
-<section id="selectedArea" style="display:none;"></section>
+<div id="subWrapper" style="display:none;"></div>
 <?php jsGateway( 'meet_feed', '__meet_feed.html' ); ?>
+<?php jsGateway( 'meet_detail', '__meet_detail.html' ); ?>
 <?php jsGateway( 'meet_setting', '__meet_setting.html' ); ?>
 <?php jsGateway( 'friend', '__friend.html' ); ?>
 <?php jsGateway( 'friend_select', '__friend_select.html' ); ?>
 <?php jsGateway( 'profile', '__profile.html' ); ?>
+<?php jsGateway( 'toast', '__toast.html' ); ?>
 <?php require_once( TEMPLATES_DIR . '_footer.html' ); ?>

@@ -1,7 +1,7 @@
 <section class="textboxCtrl_010 editSection" id="editMeetingTags">
 	<h2 class="txtHead">ミーティングタグ</h2>
 	<p>ミーティングタグを3つまで設定できます。</p>
-	<p class="editBtn"><a href="#">編集</a></p>
+	<p class="editBtn"><a href="#"></a></p>
 	<ul class="threeColumn01">
 		<li class="text<% if ( data.meeting_tag_check0 ) { %> borderGray<% } %>"><% if ( data.meeting_tag0 ) { %><%- data.meeting_tag0 %><% } %></li>
 		<li class="text<% if ( data.meeting_tag_check1 ) { %> borderGray<% } %>"><% if ( data.meeting_tag1 ) { %><%- data.meeting_tag1 %><% } %></li>
@@ -16,14 +16,14 @@
 
 <section class="textboxCtrl_010 editSection" id="editMeetingProfile">
 	<h2 class="txtHead">ミーティング内容を記入してください</h2>
-	<p class="editBtn"><a href="#">編集</a></p>
+	<p class="editBtn"><a href="#"></a></p>
 	<div><p class="text"><% if ( data.mtg_profile ) { %><%= data.mtg_profile %><% } %></p></div>
 	<!--	<div><textarea name="" id="" rows="10"></textarea></div> -->
 <!-- /textboxCtrl_010 --></section>
 
 <section class="textboxCtrl_010 editSection lasteditSection" id="editLocation">
 	<h2 class="txtHead">活動拠点</h2>
-	<p class="editBtn"><a href="#">編集</a></p>
+	<p class="editBtn"><a href="#"></a></p>
 	<div id="textLocation"><p class="text"><% if ( data.location ) { %><%- data.location %></p><% } %></div>
 	<div class="changeMarginBottom10" id="selectLocation" style="display:none;">
 		<select>
