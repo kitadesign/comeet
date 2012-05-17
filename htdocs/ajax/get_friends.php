@@ -41,14 +41,6 @@ new AjaxController(function($self){
 			}
 		}
 
-		usort( $fbFriends, function ( $a, $b ) {
-			if ( isset( $a['member_id'] ) && isset( $b['member_id'] ) ) 
-				return ( $a['like_count'] < $b['like_count'] ) ? 1 : -1;
-			if ( isset( $a['member_id'] ) ) return -1;
-			if ( isset( $b['member_id'] ) ) return 1;
-			return 0;
-		} );
-
 		$myFrineds = array();
 		$memberLikes = $dao->getMemberLikeFromMe( $memberId );
 		foreach ( $memberLikes as $memberLike ) {
@@ -63,6 +55,14 @@ new AjaxController(function($self){
 			);
 			$myFrineds[] = $friend;
 		}
+
+		usort( $fbFriends, function ( $a, $b ) {
+			if ( isset( $a['member_id'] ) && isset( $b['member_id'] ) ) 
+				return ( $a['like_count'] < $b['like_count'] ) ? 1 : -1;
+			if ( isset( $a['member_id'] ) ) return -1;
+			if ( isset( $b['member_id'] ) ) return 1;
+			return 0;
+		} );
 
 		$self->setData( 'fb_friends', $fbFriends );
 		$self->setData( 'my_frineds', $myFrineds );

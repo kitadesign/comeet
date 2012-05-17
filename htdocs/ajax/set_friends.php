@@ -24,13 +24,22 @@ new AjaxController(function($self){
 		$friends  = $self->getPostData( 'friends' );
 		if ( $friends == null ) $friends = array();
 		$nodeName = $self->getPostData( 'node_name' );
-		Logger::debug(__METHOD__, $friends);
+
+		$friendNames = $self->getPostData( 'friend_names' );
+		if ( $friendNames == null ) $friendNames = array();
+
 		if ( !Validate::inValidFriends( $friends ) )
-			throw new Exception( 'Param friends is invalid['.var_export( $friends, true ).']' );
+			throw new RuntimeException( 'Param friends is invalid['.var_export( $friends, true ).']' );
+
+		if ( !Validate::inValidFriendNames( $friendNames ) )
+			throw new RuntimeException( 'Param friend_names is invalid['.var_export( $friendNames, true ).']' );
 
 		if ( $nodeName == Conf::FACEBOOK_ID_NODE ) {
 			$res = $dao->updateMemberLikeByFacebookIds( $memberId, $friends );
 			if ( !$res ) throw new Exception( 'Create friends error['.var_export( $friends, true ).']' );
+
+			$res = $facebook->requestLikeFriend( $friendNames );
+
 			$updateFlag = true;
 		}
 

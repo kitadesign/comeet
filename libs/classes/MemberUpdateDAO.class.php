@@ -166,7 +166,7 @@ class MemberUpdateDAO extends MemberDAO
 	}
 
 	/**
-	 * 推奨取締役の登録する
+	 * 推奨取締役を登録する
 	 */
 	public function updateMemberLikeByFacebookIds ( $memberId, $facebookIds ) {
 		try {

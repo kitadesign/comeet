@@ -31,7 +31,9 @@ class Conf
 	const TOAST_NOT_GET           = "データが取得できませんでした";
 	const TOAST_NOT_CONNECT       = 'サーバと通信できませんでした\n通信環境をお確かめください';
 	const TOAST_REQUEST_MEET_NOW  = "ミーティングを提案しました\nアジェンダを作成して返答をお待ちください";
-	const REQUEST_MEET_NOW_FOR_FB = "%sさんへミーティングを提案します\n返答をお願いします\n\n";
+
+	const REQUEST_MEET_NOW_FOR_FB    = "%sさんへミーティングを提案します\n返答をお願いします\n\n";
+	const REQUEST_LIKE_FRIEND_FOR_FB = "Comeetで%sさんを一緒に仕事がしたい取締役に選びました";
 
 	const MEMBER_DB_MST_DSN = 'mysql:dbname=comeet;host=localhost';
 	const MEMBER_DB_BAK_DSN = 'mysql:dbname=comeet;host=localhost';

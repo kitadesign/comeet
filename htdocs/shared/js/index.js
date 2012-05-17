@@ -645,10 +645,11 @@ var FriendController = defineClass({
 	},
 	clickSaveFriends: function ( event ) {
 		var friends = this.getSelects();
+		var friendNames = this.getSelectedFriendNames();
 		var $saveButton = this.menu.getSaveButton();
 		var $aButton = $saveButton.find( 'li a' );
 		$aButton.html( this.$loadingImage );
-		this.callSaveFriends( _.bind( this.callbackSaveFriends, this ), friends );
+		this.callSaveFriends( _.bind( this.callbackSaveFriends, this ), friends, friendNames );
 	},
 	callbackSaveFriends: function ( isSuccess, data ) {
 		var $saveButton = this.menu.getSaveButton();
@@ -665,12 +666,13 @@ var FriendController = defineClass({
 			if ( data.status == 400 ) showToast( this.menu.toastNotSaveLabel );
 		}
 	},
-	callSaveFriends: function ( callback, friends ) {
+	callSaveFriends: function ( callback, friends, friendNames ) {
 		var nodeName = this.menu.getNodeName();
 		callJsonRpc( 'ajax/set_friends.php', {
 			auth_type: 'signature',
 			signature: this.menu.signature,
 			friends: friends,
+			friend_names: friendNames,
 			node_name: nodeName
 		}, callback );
 	},
@@ -757,11 +759,20 @@ var FriendController = defineClass({
 		this.removeSelect( id );
 	},
 	getSelects: function () {
-		var selectedFields = this.$friendSelect.find('li.selected');
+		var $selectedFields = this.$friendSelect.find('li.selected');
 		var nodeName = this.menu.getNodeName();
 		var friends = [];
-		_.each( selectedFields, function ( value, key ) {
+		_.each( $selectedFields, function ( value, key ) {
 			friends[key] = $(value).data( nodeName );
+		} );
+		return friends;
+	},
+	getSelectedFriendNames: function () {
+		var $selectedFields = this.$friendSelect.find('li.selected');
+		var $friendNames = $selectedFields.find( 'p.text' );
+		var friends = [];
+		_.each( $friendNames, function ( value, key ) {
+			friends[key] = $(value).text();
 		} );
 		return friends;
 	},

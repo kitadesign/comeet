@@ -32,9 +32,12 @@ var LocationController = defineClass({
 		}, _.bind( function ( isSuccess, data ) {
 			this.$loading.hide();
 			if ( isSuccess ) {
-				redirect( '/' );
+				showToast( getInternalParams( 'toast-save-label' ), 1000 );
+				setInterval( function () {
+					redirect( '/' );
+				}, 1000 );
 			} else {
-				console.log('TODO: Error Action');
+				showToast( getInternalParams( 'toast-not-save-label' ) );
 			}
 		}, this ) );
 	},

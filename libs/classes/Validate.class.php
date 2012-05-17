@@ -113,4 +113,17 @@ class Validate
 		}
 		return true;
 	}
+
+	/**
+	 * 推奨取締役の名前チェック
+	 */
+	public static function inValidFriendNames ( $values ) {
+		if ( !is_array( $values ) ) return false;
+		if ( count($values) > 3 ) return false;
+		foreach ( $values as $value ) {
+			if ( empty( $value ) ) continue;
+			if ( mb_strlen( $value, INTERNAL_ENCODING ) > 100 ) return false;
+		}
+		return true;
+	}
 }

@@ -13,7 +13,7 @@ new PageController(function($self){
 		if ( !Validate::isValidFacebookId( $facebookId ) ) $self->redirect('/login.php');
 
 		$memberId = $dao->getMemberId ( $facebookId );
-		$fbUserProfile = $facebook->getUserInfo(); // TODO: これ必要？
+		$fbUserProfile = $facebook->getUserInfo();
 
 		$locationIds = $dao->getLocationIdByMemberId( $memberId );
 		if ( empty( $locationIds ) || count( $locationIds ) == 0 ) {
@@ -22,14 +22,16 @@ new PageController(function($self){
 			$self->setSignature( 'memberId', $memberId );
 			$self->setData( 'is_like', ( $likeCount > 0 ) ? true : false );
 			$self->setData( 'location_ids', Conf::$LOCATION_ID );
+			$self->setInternalParams( 'toast-save-label', Conf::TOAST_SAVED );
+			$self->setInternalParams( 'toast-not-save-label', Conf::TOAST_NOT_SAVE );
+			$self->setInternalParams( 'toast-server-error-label', Conf::TOAST_SERVER_ERROR );
 			$self->setTemplate( 'set_local' );
 			return;
 		}
 
 		$profile = $dao->getMemberProfileForDetail( $memberId );
 		if ( empty( $profile ) ){
-			// TODO: 本来エラーの挙動なのでErrorにしてしまっていいのでは？
-			$name = ( isset( $fbUserProfile['name'] ) ) ? $fbUserProfile['name'] : '';
+			$self->redirect('/logout.php');
 		} else {
 			$name = $profile->member_name;
 		}

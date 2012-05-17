@@ -17,11 +17,8 @@ class FacebookAPI
 		return self::$_instance;
 	}
 
-	private function __construct () {
-		$this->_facebook = new Facebook(array(
-				'appId'  => Conf::FACEBOOK_APP_ID,
-				'secret' => Conf::FACEBOOK_APP_SECRET
-			));
+	private function __construct ( $args ) {
+		$this->_facebook = new Facebook( $args );
 	}
 
 	/**
@@ -46,10 +43,38 @@ class FacebookAPI
 	}
 
 	/**
+	 * Likeされた取締役をお知らせします
+	 */
+	public function requestLikeFriend ( $memberNames ) {
+		foreach ( $memberNames as $memberName ) {
+			$message = sprintf( Conf::REQUEST_LIKE_FRIEND_FOR_FB . REQUEST_URL, $memberName );
+			$res = $this->_facebook->api(
+				'/me/feed',
+				'post',
+				array(
+					'link' => REQUEST_URL,
+					'message' => $message,
+				)
+			);
+			Logger::debug( __METHOD__, $res );
+		}
+		return true;
+	}
+
+	/**
 	 * 友人へミーティング依頼を出します
 	 */
 	public function requestMeetNow ( $facebookId, $memberName ) {
 		$message = sprintf( Conf::REQUEST_MEET_NOW_FOR_FB . REQUEST_URL, $memberName );
+
+		$this->_facebook->api(
+			'/' . $facebookId . '/apprequest',
+			'post',
+			array(
+				'data'    => REQUEST_URL,
+				'message' => $message,
+			)
+		);
 
 		return $this->_facebook->api(
 			'/me/feed',

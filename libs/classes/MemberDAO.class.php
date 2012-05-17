@@ -241,7 +241,6 @@ class MemberDAO extends LogDAO
 
 	/**
 	 * リストに表示するプロフィール情報を取得する
-	 * TODO: ここもキャッシュから取得するように変更する
 	 */
 	public function getMemberProfileForList ( $memberIds ) {
 		if( !is_array( $memberIds ) || empty( $memberIds ) ) return array();
