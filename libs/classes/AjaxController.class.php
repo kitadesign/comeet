@@ -109,7 +109,7 @@ class AjaxController extends Controller
 	/**
 	 * バリデーションエラー
 	 */
-	protected function badRequestError () {
+	public function badRequestError () {
 		$output = ob_get_contents();
 		ob_end_clean();
 		if ( !empty( $output ) ) error_log( $output );

@@ -17,13 +17,16 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug(__METHOD__, 'Auth Error');
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
 
 		$profile = $dao->getMemberProfileForDetail( $memberId );
 		$self->setData( 'member_name', $profile->member_name );
 		$self->setData( 'company_email_address', $profile->company_email_address );
-		$self->setData( 'member_pr', $profile->member_pr );
+
+		$member_pr = nl2br( html( $profile->member_pr ) );
+		$member_pr = str_replace(array("\r\n","\r","\n"), '', $member_pr);
+		$self->setData( 'member_pr', $member_pr );
 
 		$likeCount = $dao->getMemberLikeCount( $memberId );
 		$self->setData( 'like_count', $likeCount );
@@ -41,6 +44,10 @@ new AjaxController(function($self){
 				$self->setData( 'company_tel'.$key,  $companyInfo->company_tel );
 			}
 		}
+	} catch( RuntimeException $re ) {
+		Logger::debug( 'get_profile', $re->getMessage() );
+		$self->badRequestError();
+		return;
 	} catch ( Exception $e ) {
 		Logger::error( __METHOD__, $e->getMessage() );
 		throw $e;

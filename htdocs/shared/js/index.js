@@ -43,7 +43,7 @@ var MenuContainer = defineClass({
 		this.editButtonLabel    = getInternalParams( 'edit-button' );
 		this.saveButtonLabel    = getInternalParams( 'save-button' );
 		this.meetNowButtonLabel = getInternalParams( 'meet-now-button' );
-		this.facebookSyncLabel  = getInternalParams( 'facebook-sync' );
+		this.meetTextareaLabel  = getInternalParams( 'meet-textarea' );
 
 		this.imageUrlSmall   = getInternalParams( 'image-url-s' );
 		this.nodeName        = getInternalParams( 'node-name' );
@@ -102,8 +102,17 @@ var MenuContainer = defineClass({
 		this.$viewport.addClass('viewport');
 		this.$pageContent.addClass('pageContent');
 		this.$menu.show();
-		this.$menu.css( 'height', innerHeight );
-		this.$pageContent.css( 'height', innerHeight );
+		
+		var menuHeight = this.$menu.css( 'height' );
+		menuHeight = menuHeight.replace( 'px', '' );
+		if ( menuHeight > innerHeight ) {
+			this.$menu.css( 'height', menuHeight );
+			this.$pageContent.css( 'height', menuHeight );
+		} else {
+			this.$menu.css( 'height', innerHeight );
+			this.$pageContent.css( 'height', innerHeight );
+		}
+
 		this.$pageContent.css( 'overflow-y', 'hidden' );
 		this.openFlag = true;
 		if (!this.attendFlag) {
@@ -279,6 +288,11 @@ var MeetDetailController = defineClass({
 			this.$list = this.feed.getList();
 			this.$list.off( 'click' );
 
+			this.$meetTextarea = this.$detailView.find( 'div.formBox p.textarea textarea' );
+			this.$meetTextarea.html( this.menu.meetTextareaLabel );
+			this.$meetTextarea.on( 'focus', _.bind( this.focusMeetTextarea, this ) );
+			this.$meetTextarea.on( 'blur', _.bind( this.blurMeetTextarea, this ) );
+
 			this.$detailView.css( 'top', document.body.scrollTop );
 		} else {
 			if ( !data.status ) {
@@ -291,21 +305,36 @@ var MeetDetailController = defineClass({
 		}
 		this.feed.removeLoadingImage();
 	},
+	focusMeetTextarea: function ( event ) {
+		var $target = $( event.target );
+		if ( $target.val() == this.menu.meetTextareaLabel ) {
+			$target.val( '' );
+		}
+	},
+	blurMeetTextarea: function ( event ) {
+		var $target = $( event.target );
+		if ( $target.val() == '' ) {
+			$target.val( this.menu.meetTextareaLabel );
+		}
+	},
 	clickActionButton: function ( event ) {
 		this.addLoadingImage();
-		this.callMeetAction( _.bind( this.callbackMeetAction, this ), this.openMemberId );
+
+		var meetText = this.$meetTextarea.val();
+		if ( meetText == this.menu.meetTextareaLabel ) meetText = '';
+		this.callMeetAction( _.bind( this.callbackMeetAction, this ), this.openMemberId, meetText );
 		event.stopPropagation();
 	},
-	callMeetAction: function ( callback, memberId ) {
+	callMeetAction: function ( callback, memberId, meetText ) {
 		callJsonRpc( 'ajax/set_meet_now.php', {
 			auth_type: 'signature',
 			signature: this.menu.signature,
-			to_member_id: memberId
+			to_member_id: memberId,
+			meet_text: meetText
 		}, callback );
 	},
 	callbackMeetAction: function ( isSuccess, data ) {
 		if ( isSuccess ) {
-			// TODO: ここが実機だとToastが表示されない
 			showToast( this.menu.toastRequestMeetNowLabel, 2000 );
 		} else {
 			if ( !data.status ) {
@@ -474,9 +503,9 @@ var MeetSettingController = defineClass({
 	},
 	clickMeetingProfileButton: function ( event ) {
 		if ( this.editMeetingProfileFlag ) {
-			var data = this.$textAreaMeetingProfile.find( 'textarea' ).val();
 			this.$txtHeadMeetingProfile.append( this.$loadingImage );
 			this.$loadingImage.show();
+			var data = this.$textAreaMeetingProfile.find( 'textarea' ).val();
 			this.callEditMeetSetting( _.bind( this.callbackMeetingProfile, this ),
 				{mtg_profile: ( data ) ? data : ''}
 			);
@@ -570,6 +599,8 @@ var FriendController = defineClass({
 		this.$friendSelect = $('#selectedArea');
 		this.openFlag      = false;
 
+		this.beforeLikeMembers = new Array();
+
 		this.$loadingImage = getLoadingImage();
 		this.saveButtonOpenFlag = false;
 	},
@@ -620,6 +651,7 @@ var FriendController = defineClass({
 				this.disableButton($likeButton);
 
 				var $selectField = $( selectFields[key] );
+				this.beforeLikeMembers.push( value.name );
 				this.setFriendSelect( $selectField, value.id, value.name );
 			}, this ) );
 		}
@@ -646,6 +678,8 @@ var FriendController = defineClass({
 	clickSaveFriends: function ( event ) {
 		var friends = this.getSelects();
 		var friendNames = this.getSelectedFriendNames();
+		friendNames = _.difference( friendNames, this.beforeLikeMembers );
+
 		var $saveButton = this.menu.getSaveButton();
 		var $aButton = $saveButton.find( 'li a' );
 		$aButton.html( this.$loadingImage );
@@ -819,6 +853,7 @@ var ProfileController = defineClass({
 		this.editCompanyEmailFlag = false;
 		this.editProfileTagsFlag  = false;
 		this.editCompanyInfoFlag  = false;
+		this.editPRFlag           = false;
 
 		this.$loadingImage = getLoadingImage();
 	},
@@ -854,6 +889,7 @@ var ProfileController = defineClass({
 		this.editCompanyEmailFlag = false;
 		this.editProfileTagsFlag  = false;
 		this.editCompanyInfoFlag  = false;
+		this.editPRFlag           = false;
 
 		this.$editNameButton = this.$scroller.find( 'section#editName p.editBtn a' );
 		this.$textAreaName   = this.$scroller.find( 'section#editName p.text' );
@@ -870,7 +906,7 @@ var ProfileController = defineClass({
 		this.$editPRButton = this.$scroller.find( 'section#editPR p.editBtn a' );
 		this.$textAreaPR   = this.$scroller.find( 'section#editPR p.text' );
 		this.$txtHeadPR    = this.$scroller.find( 'section#editPR h2.txtHead' );
-		this.$editPRButton.text( this.menu.facebookSyncLabel );
+		this.$editPRButton.text( this.menu.editButtonLabel );
 		this.$editPRButton.on( 'click', _.bind( this.clickEditPR, this ) );
 
 		this.$sectionProfileTags    = this.$scroller.find( 'section#editProfileTags' );
@@ -955,13 +991,26 @@ var ProfileController = defineClass({
 		this.$loadingImage.hide();
 	},
 	clickEditPR: function ( event ) {
-		this.$txtHeadPR.append( this.$loadingImage );
-		this.$loadingImage.show();
-		this.callEditProfile( _.bind( this.callbackEditPR, this ), {member_pr: 'update'} );
+		if ( this.editPRFlag ) {
+			this.$txtHeadPR.append( this.$loadingImage );
+			this.$loadingImage.show();
+			var data = this.$textAreaPR.find( 'textarea' ).val();
+			this.callEditProfile( _.bind( this.callbackEditPR, this ),
+				{member_pr: ( data ) ? data : ''}
+			);
+		} else {
+			var $textarea = getTextArea( this.$textAreaPR.html(), 10, 40 );
+			this.$textAreaPR.html( '' );
+			this.$textAreaPR.append( $textarea );
+			this.editPRFlag = true;
+			this.$editPRButton.text( this.menu.saveButtonLabel );
+		}
 	},
 	callbackEditPR: function ( isSuccess, data ) {
 		if ( isSuccess ) {
-			this.$textAreaPR.text( data.member_pr );
+			this.$textAreaPR.html( convertLineFeed( data.member_pr, true ) );
+			this.$editPRButton.text( this.menu.editButtonLabel );
+			this.editPRFlag = false;
 			showToast( this.menu.toastSaveLabel );
 		} else {
 			if ( !data.status ) showToast( this.menu.toastServerErrorLabel );

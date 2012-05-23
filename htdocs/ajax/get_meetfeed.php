@@ -17,29 +17,42 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug( 'get_meetfeed', 'Auth Error' );
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
 
 		$count = $dao->getMemberLikeCount( $memberId );
 		if ( $count > 0 ) {
-			$meetfeed = $dao->getMeetFeed( $memberId );
+			$meetfeed    = $dao->getMeetFeed( $memberId );
+			$tmpSubMeetfeed = $dao->getMeetFeed( $memberId, 1 );
+			$self->setData( 'meetfeed', $meetfeed );
+
+			$meetIds = array();
+			foreach ( $meetfeed as $row ) $meetIds[$row['member_id']] = $row['member_id'];
+
+			$subMeetfeed = array();
+			foreach ( $tmpSubMeetfeed as $row )
+				if ( !isset( $meetIds[ $row['member_id'] ] ) ) $subMeetfeed[] = $row;
+
+			$self->setData( 'sub_meetfeed', $subMeetfeed );
 		} else {
 			$friends = $facebook->getFriends();
 			$friends = ( isset($friends['data'] ) ) ? $friends['data'] : array();
 			$fbFriendIds = array();
 			foreach ( $friends as $friend ) $fbFriendIds[] = $friend['id'];
 			$meetfeed = $dao->getMeetFeedByNotLike( $memberId, $fbFriendIds );
+			$self->setData( 'meetfeed', $meetfeed );
 		}
-		usort( $meetfeed, function ( $a, $b ) {
-			if ( isset( $a['like_count'] ) && isset( $b['like_count'] ) ) 
-				return ( $a['like_count'] < $b['like_count'] ) ? 1 : -1;
-			if ( isset( $a['like_count'] ) ) return -1;
-			if ( isset( $b['like_count'] ) ) return 1;
-			return 0;
-		} );
+
+		$locationIds = $dao->getLocationIdByMemberId( $memberId );
+		$self->setData( 'localtion_label', Conf::$LOCATION_ID[ $locationIds[0] ] );
+		$meetingTag = $dao->getMeetingTags( $memberId, true );
+		$self->setData( 'meeting_tag', ( !empty( $meetingTag ) ) ? $meetingTag->tag_text : '' );
 
 		$self->setData( 'is_like_member', ( $count > 0 ) ? 1 : 0 );
-		$self->setData( 'meetfeed', $meetfeed );
+	} catch( RuntimeException $re ) {
+		Logger::info( 'get_member_detail', $re->getMessage() );
+		$self->badRequestError();
+		return;
 	} catch ( Exception $e ) {
 		Logger::error( 'get_meetfeed', $e->getMessage() );
 		throw $e;

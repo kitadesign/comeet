@@ -17,19 +17,43 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug(__METHOD__, 'Auth Error');
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
-		$toMemberId = $self->getPostData( 'to_member_id' );
-		Logger::debug(__METHOD__, $toMemberId);
-		if ( !Validate::isValidMemberId( $toMemberId ) )
-			throw new Exception( 'Param to_member_id is invalid['.$toMemberId.']' );
 
-		$res = $dao->createActionNow( $memberId, $toMemberId, 0 );
+		$toMemberId = $self->getPostData( 'to_member_id' );
+		$meetText   = $self->getPostData( 'meet_text' );
+
+		if ( !Validate::isValidMemberId( $toMemberId ) )
+			throw new RuntimeException( 'Param to_member_id is invalid['.$toMemberId.']' );
+
+		$fromMemberProfileTags = $dao->getProfileTag( $memberId );
+		$fromMemberMeetingTag  = $dao->getMeetingTags( $memberId, true );
+		$fromMemberProfile     = $dao->getMemberProfileForDetail( $memberId );
+		$fromMemberCompany     = $dao->getMemberCompanyForDetail( $memberId, array(0) );
+		$toMemberProfile       = $dao->getMemberProfileForDetail( $toMemberId );
+
+		$res = $dao->createActionNow( $memberId, $toMemberId, $meetText );
 		if ( !$res ) throw new Exception( 'Create action meet now error['.$toMemberId.']' );
 
-		$profile = $dao->getMemberProfileForDetail( $toMemberId );
-		$res = $facebook->requestMeetNow( $dao->getFacebookId( $toMemberId ), $profile->member_name );
-		if ( !$res ) throw new Exception( 'Request meet now error['.$profile->member_name.']' );
+		$res = $facebook->requestMeetNow( $dao->getFacebookId( $toMemberId ), $toMemberProfile->member_name, $fromMemberMeetingTag->tag_text );
+		if ( !$res ) throw new Exception( 'Request meet now error['.$toMemberProfile->member_name.']' );
+
+		$mailer = Mailer::getInstance();
+		$res = $mailer->sendJPMeetNow(
+			$facebookId,
+			$fromMemberProfile->company_email_address,
+			$fromMemberProfile->member_name,
+			$fromMemberProfile->member_pr,
+			( isset( $fromMemberCompany[0] ) )? $fromMemberCompany[0]->company_name : '',
+			( isset( $fromMemberCompany[0] ) )? $fromMemberCompany[0]->company_url  : '',
+			( isset( $fromMemberCompany[0] ) )? $fromMemberCompany[0]->company_tel  : '',
+			$toMemberProfile->company_email_address,
+			$toMemberProfile->member_name,
+			$fromMemberMeetingTag->tag_text,
+			$fromMemberProfileTags,
+			html( trim( $meetText ) )
+		);
+		if ( !$res ) throw new RuntimeException( 'Send meet now error['.$toMemberProfile->member_name.']' );
 
 		$self->setData( 'result', 'OK' );
 	} catch( FacebookApiException $fae ) {
@@ -38,7 +62,7 @@ new AjaxController(function($self){
 		return;
 	} catch( RuntimeException $re ) {
 		Logger::debug( 'set_meet_now', $re->getMessage() );
-		$self->setData( 'error', 'Input error.' );
+		$self->badRequestError();
 		return;
 	} catch( PDOException $e ) {
 	} catch ( Exception $e ) {

@@ -731,6 +731,9 @@ ul.selectedList li .text{
 .borderGray {
 	border: 2px solid gray;
 }
+.borderTop {
+	border-top: 1px solid #cccccc;
+}
 
 span.loadingImage img {
 	vertical-align: middle;
@@ -740,7 +743,7 @@ span.loadingImage img {
 -------------------------------------------------- */
 
 .checkComments {
-	position: absolute;
+	position: fixed;
 	bottom: 120px;
 	text-align: center;
 	z-index: 1000;
@@ -768,13 +771,15 @@ span.loadingImage img {
 	background: #fff;
 	box-shadow: #ccc 0 0 10px;
 	position: absolute;
-	top: 50px;
+	top: 1px;
 	z-index: 150;
+	min-width: 300px;
 }
 
 .closeBtn {
 	margin-bottom: 10px;
 	text-align: right;
+	float: right;
 }
 
 .mainSelectedTop {
@@ -784,3 +789,27 @@ span.loadingImage img {
 .menuOpenHeadArea {
 	position: absolute;
 }
+
+/* .rankingTable
+-------------------------------------------------- */
+
+.rankingTable {
+	margin-bottom: 10px;
+	width: 100%;
+}
+
+.rankingTable th,
+.rankingTable td {
+	padding: 2px 5px;
+	border-bottom: 1px solid #000;
+}
+
+.rankingTable th {
+	font-weight: bold;
+	text-align: center;
+}
+
+.rankingTable tbody td {
+	text-align: center;
+}
+

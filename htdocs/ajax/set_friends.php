@@ -18,7 +18,7 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug(__METHOD__, 'Auth Error');
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
 
 		$friends  = $self->getPostData( 'friends' );
@@ -33,6 +33,8 @@ new AjaxController(function($self){
 
 		if ( !Validate::inValidFriendNames( $friendNames ) )
 			throw new RuntimeException( 'Param friend_names is invalid['.var_export( $friendNames, true ).']' );
+
+		$beforeFriends = $dao->getMemberLikeFromMe( $memberId );
 
 		if ( $nodeName == Conf::FACEBOOK_ID_NODE ) {
 			$res = $dao->updateMemberLikeByFacebookIds( $memberId, $friends );
@@ -54,7 +56,7 @@ new AjaxController(function($self){
 		return;
 	} catch( RuntimeException $re ) {
 		Logger::debug( 'set_friends', $re->getMessage() );
-		$self->setData( 'error', 'Input error.' );
+		$self->badRequestError();
 		return;
 	} catch( PDOException $e ) {
 	} catch ( Exception $e ) {

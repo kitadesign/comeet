@@ -4,15 +4,20 @@
 		<li>
 			<div class="image"><img src="<%- data.icon %>" alt="" width="50" height="50"></div>
 			<div class="text">
-				<p><span class="pickupName">名前：<%- data.member_name %></span>
-				<% if ( data.company_name ) { %><br><span class="pickupCompany">会社名：
-<% if ( data.company_url ) { %>
-	<a href="<%- data.company_url %>" target="_brank"><%- data.company_name %></a>
-<% } else { %>
-	<%- data.company_name %><% } %></span>
+				<p><span class="pickupName"><%- data.member_name %></span>
+				<% if ( data.profile_tags ) { %><br><span class="pickupProfileTag">専門分野：<%- data.profile_tags %></span><% } %>
+<% if ( data.company_name ) { %>
+					<br>
+						<span class="pickupCompany">
+	<% if ( data.company_url ) { %>
+							<a href="<%- data.company_url %>" target="_brank"><%- data.company_name %></a>
+	<% } else { %>
+							<%- data.company_name %>
+	<% } %>
+						</span>
 <% } %>
-				<% if ( data.company_tel ) { %><br><span class="pickupCompany">TEL：<%- data.company_tel %></span><% } %>
-				<% if ( data.member_pr ) { %><br><span class="pickupComment">自己紹介：<%= convertLineFeed( data.member_pr ) %></span><% } %>
+				<% if ( data.company_tel ) { %><br><span class="pickupCompany"><a href="tel:<%- data.company_tel.replace(/-/g, '') %>"><%- data.company_tel %></a></span><% } %>
+				<% if ( data.member_pr ) { %><br><span class="pickupComment"><%= convertLineFeed( data.member_pr ) %></span><% } %>
 				</p>
 			</div>
 		</li>
@@ -20,8 +25,8 @@
 </section>
 
 <% if ( data.is_like_member ) { %>
-<section class="textboxCtrl_010 editSection lasteditSection">
-	<h2 class="txtHead">この方を推奨している方々</h2>
+<section class="textboxCtrl_010 editSection">
+	<h2 class="txtHead">この方を推薦している取締役</h2>
 	<div class="selectedList02" id="flickable1">
 		<ul class="selectedList" style="width: <%- data.like_count %>00px;">
 	<% _.each( data.like_member, function( value, key ){ %>
@@ -32,8 +37,9 @@
 	<% } ); %>
 		</ul>
 	</div>
+<!-- /textboxCtrl_010 --></section>
 <% } %>
-
+<!--
 <% if ( data.mtg_profile ) { %>
 	<h2 class="txtHead">ミーティング内容</h2>
 	<div class="text"><%= convertLineFeed( data.mtg_profile ) %></div>
@@ -56,10 +62,16 @@
 	<% } ); %>
 	</ul>
 <% } %>
+-->
+<section class="textboxCtrl_010 editSection lasteditSection">
+	<div class="formBox center">
+		<p class="changeMarginBottom10 description">この方に相談したい場合は、相談内容を入力しMeetNowをタップしてください。<br>Comeetよりメールが配信されます。</p>
+		<p class="changeMarginBottom10 textarea"><textarea rows="4" cols="30" name="textarea"></textarea></p>
+	<!-- /formBox --></div>
 
 	<div class="formBox center">
 		<ul class="formBtn formCenterBtn02 formBtnLarge">
-			<li><a href="javascript:void(0);">Meetなう</a></li>
+			<li><a href="javascript:void(0);">MeetNow</a></li>
 		</ul>
 	<!-- /formBox --></div>
 <!-- /textboxCtrl_010 --></section>

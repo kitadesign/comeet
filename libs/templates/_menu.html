@@ -6,18 +6,22 @@
 			</div>
 		<!-- /ownerName --></div>
 		<dl class="menuList">
-			<dt>皆が推奨する取締役が見つかります。</dt>
-			<dd><a id="menu_meet_feed" href="#/meetfeed">Meet Feed</a></dd>
-			<dt>相談・商談内容を設定して下さい。</dt>
-			<dd><a id="menu_meet_setting" href="#/mtgsetting">Meet Setting</a></dd>
-<?php if( $like_count > 0 ) { ?>
-			<dt>貴方の推奨取締役を選んで下さい。</dt>
-			<dd><a id="menu_friend" href="#/friend">推奨取締役</a></dd>
+			<dt><a id="menu_meet_feed" href="#/meetfeed">Meet Feed</a></dt>
+<?php if ( $is_like ) { ?>
+			<dd>活動拠点とミーティングタグが一致している取締役が表示されます。取締役を選択しMeetNowを送ることができます。</dd>
+<?php } else { ?>
+			<dd>Comeetに登録している知人が表示されます。</dd>
 <?php } ?>
-			<dt>貴方の情報を更新して下さい。</dt>
-			<dd><a id="menu_profile" href="#/profile">プロフィール</a></dd>
+			<dt><a id="menu_meet_setting" href="#/mtgsetting">Update Status</a></dt>
+			<dd>今相談したい・ミーティングしたいことを入力してください。</dd>
+<?php if( $like_count > 0 ) { ?>
+			<dt><a id="menu_friend" href="#/friend">My Network</a></dt>
+			<dd>最も一緒に仕事をしたい3名の取締役を選択してください。保存をすると推薦取締役としてComeetに招待されます。</dd>
+<?php } ?>
+			<dt><a id="menu_profile" href="#/profile">Profile</a></dt>
+			<dd>あなたの情報を更新して下さい。</dd>
 			<dt></dt>
-			<dd><a href="/logout.php">ログアウト</a></dd>
+			<dd><a href="/logout.php">Logout</a></dd>
 <!--			<dd><a href="#/prifile">言語</a></dd> -->
 <!--			<dd><a href="#/company">企業情報</a></dd> -->
 		<!-- /ownerName --></dl>

@@ -65,7 +65,7 @@ class Validate
 	 * @return Boolean
 	 */
 	public static function isValidCompanyEmailAddress ( $value ) {
-		if ( empty( $value ) ) return true;
+		if ( empty( $value ) ) return false;
 		if ( strlen( $value, INTERNAL_ENCODING ) > 100 ) return false;
 		if (preg_match('/^([a-z0-9_]|\-|\.|\+)+@(([a-z0-9_]|\-)+\.)+[a-z]{2,6}$/i', $value)) {
 			return true;

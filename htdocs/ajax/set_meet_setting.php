@@ -13,7 +13,7 @@ new AjaxController(function($self){
 	try {
 		$facebookId = $facebook->getFacebookId();
 		if ( !Validate::isValidFacebookId( $facebookId ) )
-			throw new RuntimeException( 'Don\'t login facebook!' );
+			throw new Exception( 'Don\'t login facebook!' );
 
 		$memberId = $dao->getMemberId ( $facebookId );
 
@@ -25,18 +25,30 @@ new AjaxController(function($self){
 		Logger::debug( 'set_meet_setting', $meet_setting );
 
 		if ( isset( $meet_setting['meeting_tags'] ) ) {
-			if( !Validate::isValidMeetingTags( $meet_setting['meeting_tags'] ) )
-				throw new RuntimeException( 'Param meeting_tags is invalid['.var_export( $meet_setting['meeting_tags'], true).']' );
-			$res = $dao->replaceMeetingTag( $memberId, $meet_setting['meeting_tags'], $meet_setting['enable_flg'] );
-			if ( !$res ) throw new Exception( 'Update meeting_tags error['.$meet_setting['meeting_tags'].']' );
+			$meetingTags = $meet_setting['meeting_tags'];
+			if( !Validate::isValidMeetingTags( $meetingTags ) )
+				throw new RuntimeException( 'Param meeting_tags is invalid['.var_export( $meetingTags, true).']' );
+
+			$enableMeetingTag = $dao->getMeetingTags( $memberId, true );
+
+			$res = $dao->replaceMeetingTag( $memberId, $meetingTags, $meet_setting['enable_flg'] );
+			if ( !$res ) throw new Exception( 'Update meeting_tags error[' . var_export( $meetingTags, true ) . ']' );
 			$self->setData( 'enable_flg', $meet_setting['enable_flg'] );
+
+			$enablePostTag = ( isset( $meetingTags[ $meet_setting['enable_flg'] ] ) ) ? $meetingTags[ $meet_setting['enable_flg'] ] : '';
+
+			if ( $enablePostTag !== '' && $enablePostTag !== $enableMeetingTag ) {
+				// 有効なミーティングタグが更新されていればFBに送信
+				$facebook->requestUpdateMeetingTag( $enablePostTag );
+			}
+
 			$updateFlag = true;
 		}
 
 		if ( isset( $meet_setting['mtg_profile'] ) ) {
 			if( !Validate::isValidMeetingProfile( $meet_setting['mtg_profile'] ) )
 				throw new RuntimeException( 'Param mtg_profile is invalid['.$meet_setting['mtg_profile'].']' );
-			$res = $dao->updateMeetingProfile( $memberId, html( $meet_setting['mtg_profile'] ) );
+			$res = $dao->updateMeetingProfile( $memberId, trim( $meet_setting['mtg_profile'] ) );
 			if ( !$res ) throw new Exception( 'Update mtg_profile error['.$meet_setting['mtg_profile'].']' );
 			$self->setData( 'mtg_profile', html( $meet_setting['mtg_profile'] ) );
 			$updateFlag = true;
@@ -63,7 +75,7 @@ new AjaxController(function($self){
 		return;
 	} catch( RuntimeException $re ) {
 		Logger::debug( 'set_meet_setting', $re->getMessage() );
-		$self->setData( 'error', 'Input error.' );
+		$self->badRequestError();
 		return;
 	} catch( PDOException $e ) {
 	} catch ( Exception $e ) {

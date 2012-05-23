@@ -20,10 +20,10 @@ class Conf
 	 */
 	const SIGNATURE_SOLT = 'MJ4MGRQCuofP9YMr';
 
-	const JA_EDIT_BUTTON     = '編集';
-	const JA_SAVE_BUTTON     = '保存';
-	const JA_FACEBOOK_SYNC   = 'Facebookと同期';
-	const JA_MEET_NOW_BUTTON = 'Meetなう';
+	const JA_EDIT_BUTTON           = '編集';
+	const JA_SAVE_BUTTON           = '保存';
+	const JA_MEET_NOW_BUTTON       = 'Meetなう';
+	const JA_MEET_TEXTAREA_DEFAULT = '相談内容を記載してください';
 
 	const TOAST_SAVED             = '保存しました';
 	const TOAST_NOT_SAVE          = "保存できませんでした\n入力内容を見直してください";
@@ -32,8 +32,12 @@ class Conf
 	const TOAST_NOT_CONNECT       = 'サーバと通信できませんでした\n通信環境をお確かめください';
 	const TOAST_REQUEST_MEET_NOW  = "ミーティングを提案しました\nアジェンダを作成して返答をお待ちください";
 
-	const REQUEST_MEET_NOW_FOR_FB    = "%sさんへミーティングを提案します\n返答をお願いします\n\n";
-	const REQUEST_LIKE_FRIEND_FOR_FB = "Comeetで%sさんを一緒に仕事がしたい取締役に選びました";
+	const REQUEST_MEET_NOW_FOR_FB_MESSAGE        = "%sさんと%sについて話したい。";
+	const REQUEST_LIKE_FRIEND_FOR_FB_MESSAGE     = "%sさんを最も一緒に仕事がしたい3名の取締役に選びました。";
+	const REQUEST_LIKE_FRIEND_FOR_FB_DESCRIPTION = 'Comeetは、取締役のための招待制ソーシャルビジネスネットワーキングサービスです。';
+	const REQUEST_UPDATE_MEETING_TAG_MESSAGE     = '%sについて話したい。';
+
+	const EMAIL_MEET_NOW_SUBJECT = '%sさんが%sについてComeetからMeetなう提案がありました';
 
 	const MEMBER_DB_MST_DSN = 'mysql:dbname=comeet;host=localhost';
 	const MEMBER_DB_BAK_DSN = 'mysql:dbname=comeet;host=localhost';
@@ -50,6 +54,8 @@ class Conf
 	);
 
 	const CACHE_EXPIRE = 86400; // 1day
+
+	const EMAIL_MEET_NOW_ADMIN = 'noreply@comeet.asia';
 
 	/**
 	 * 活動場所ID

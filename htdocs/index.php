@@ -16,11 +16,12 @@ new PageController(function($self){
 		$fbUserProfile = $facebook->getUserInfo();
 
 		$locationIds = $dao->getLocationIdByMemberId( $memberId );
+		$likeCount = $dao->getMemberLikeCount ( $memberId );
+		$self->setData( 'is_like', ( $likeCount > 0 ) ? true : false );
+
 		if ( empty( $locationIds ) || count( $locationIds ) == 0 ) {
-			$likeCount = $dao->getMemberLikeCount ( $memberId );
 			$self->setJavaScript( 'set_local' );
 			$self->setSignature( 'memberId', $memberId );
-			$self->setData( 'is_like', ( $likeCount > 0 ) ? true : false );
 			$self->setData( 'location_ids', Conf::$LOCATION_ID );
 			$self->setInternalParams( 'toast-save-label', Conf::TOAST_SAVED );
 			$self->setInternalParams( 'toast-not-save-label', Conf::TOAST_NOT_SAVE );
@@ -51,7 +52,7 @@ new PageController(function($self){
 	$self->setInternalParams( 'edit-button', Conf::JA_EDIT_BUTTON );
 	$self->setInternalParams( 'save-button', Conf::JA_SAVE_BUTTON );
 	$self->setInternalParams( 'meet-now-button', Conf::JA_MEET_NOW_BUTTON );
-	$self->setInternalParams( 'facebook-sync', Conf::JA_FACEBOOK_SYNC );
+	$self->setInternalParams( 'meet-textarea', Conf::JA_MEET_TEXTAREA_DEFAULT );
 	$self->setInternalParams( 'image-url-s', Conf::FACEBOOK_IMAGE_URL_S );
 	$self->setInternalParams( 'default-image-url', Conf::DEFAULT_IMAGE_URL );
 	$self->setInternalParams( 'node-name', Conf::FACEBOOK_ID_NODE );

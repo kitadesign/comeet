@@ -47,16 +47,16 @@ class FacebookAPI
 	 */
 	public function requestLikeFriend ( $memberNames ) {
 		foreach ( $memberNames as $memberName ) {
-			$message = sprintf( Conf::REQUEST_LIKE_FRIEND_FOR_FB . REQUEST_URL, $memberName );
+			$message = sprintf( Conf::REQUEST_LIKE_FRIEND_FOR_FB_MESSAGE, $memberName );
 			$res = $this->_facebook->api(
 				'/me/feed',
 				'post',
 				array(
-					'link' => REQUEST_URL,
-					'message' => $message,
+					'link'        => REQUEST_URL,
+					'description' => Conf::REQUEST_LIKE_FRIEND_FOR_FB_DESCRIPTION,
+					'message'     => $message,
 				)
 			);
-			Logger::debug( __METHOD__, $res );
 		}
 		return true;
 	}
@@ -64,23 +64,28 @@ class FacebookAPI
 	/**
 	 * 友人へミーティング依頼を出します
 	 */
-	public function requestMeetNow ( $facebookId, $memberName ) {
-		$message = sprintf( Conf::REQUEST_MEET_NOW_FOR_FB . REQUEST_URL, $memberName );
-
-		$this->_facebook->api(
-			'/' . $facebookId . '/apprequest',
-			'post',
-			array(
-				'data'    => REQUEST_URL,
-				'message' => $message,
-			)
-		);
+	public function requestMeetNow ( $facebookId, $memberName, $meetingTag ) {
+		$message = sprintf( Conf::REQUEST_MEET_NOW_FOR_FB_MESSAGE, $memberName, $meetingTag );
 
 		return $this->_facebook->api(
 			'/me/feed',
 			'post',
 			array(
-				'link' => REQUEST_URL,
+				'message' => $message,
+			)
+		);
+	}
+
+	/**
+	 * ミーティングタグ更新をお知らせする
+	 */
+	public function requestUpdateMeetingTag ( $meetingTag ) {
+		$message = sprintf( Conf::REQUEST_UPDATE_MEETING_TAG_MESSAGE, $meetingTag );
+
+		return $this->_facebook->api(
+			'/me/feed',
+			'post',
+			array(
 				'message' => $message,
 			)
 		);
@@ -98,7 +103,7 @@ class FacebookAPI
 	 */
 	public function getLoginUrl () {
 		$params = array(
-			'scope' => 'publish_stream,read_friendlists,user_about_me,user_online_presence,offline_access'
+			'scope' => 'publish_stream,read_friendlists,user_about_me,user_online_presence,offline_access,email'
 		);
 		return $this->_facebook->getLoginUrl( $params );
 	}

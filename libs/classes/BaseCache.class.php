@@ -32,8 +32,6 @@ abstract class BaseCache
 	 * キャッシュ処理のすべてを行う
 	 */
 	public function cache( $key, $data = null ) {
-		Logger::debug( __METHOD__, $key );
-		if ($data) Logger::debug( __METHOD__, $data );
 		$connect = $this->_getConnection();
 		if ( $data === null ) {
 			return $connect->get( $key );

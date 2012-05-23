@@ -20,6 +20,7 @@ date_default_timezone_set('Asia/Tokyo');
 require_once( LIBS_DIR . 'functions.php' );
 
 // Charset UTF-8
+mb_language("japanese");
 ini_set( 'mbstring.language', 'Japanese' );
 ini_set( 'mbstring.http_input', 'pass' );
 ini_set( 'mbstring.http_output', 'pass' );

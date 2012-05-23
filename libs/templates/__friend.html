@@ -1,5 +1,5 @@
 <section>
-	<p class="textboxCtrl_010 title">推奨できる取締役を選んでください。</p>
+	<p class="textboxCtrl_010 title">最も一緒に仕事をしたい3名の取締役を選択してください。保存をすると推薦取締役としてComeetに招待されます。</p>
 	<hr class="hr">
 </section>
 <section>
@@ -12,8 +12,8 @@
 			</div>
 			<div class="text">
 				<p>
-				<span class="pickupName">名前:<%- value.name %></span>
-				<% if ( value.member_id ) { %><br /><span class="pickupLike" data-like-count="<%- value.like_count %>">推奨している人数：<%- value.like_count %>人</span><% } %>
+				<span class="pickupName"><%- value.name %></span>
+				<% if ( value.member_id ) { %><br /><span class="pickupLike" data-like-count="<%- value.like_count %>">推薦されている人数：<%- value.like_count %>人</span><% } %>
 				</p>
 			</div>
 			<div class="formBox center">

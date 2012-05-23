@@ -1,0 +1,42 @@
+<html>
+<body>
+<p><?php echo( $to_name ); ?>さんへ<?php echo( $from_name ); ?>から<?php echo( $meeting_tag ); ?>についてミーティングの依頼が届いています。<br>
+ミーティングをする場合は、本メールに直接ご返信いただきご連絡お願い致します。</p>
+
+	<div style="padding: 2px; border-top: 1px solid #3366CC">
+		<center>
+		<table>
+			<tr>
+				<td colspan="2"><p><?php echo( $from_name ); ?>さん</p></td>
+			</tr>
+			<tr>
+				<td style="padding:2px;"><img src="<?php echo( $from_icon ); ?>" width="50" height="50"></td>
+				<td style="padding:2px;">
+					専門分野：<?php echo( implode( ',', $profile_tags ) ); ?>
+					<?php if ( !empty( $from_company_name ) ) { ?><br>
+						<?php if ( !empty( $from_company_url ) ) { ?><a href="<?php echo( $from_company_url ); ?>/?__from=comeet" target="_blank"><?php } ?>
+<?php echo( $from_company_name ); ?>
+						<?php if ( !empty( $from_company_url ) ) { ?></a><?php } ?>
+					<?php } ?>
+					<?php if ( !empty( $from_company_tel ) ) { ?><br><?php echo( $from_company_tel ); ?><?php } ?>
+					<?php if ( !empty( $from_pr ) ) { ?><br><?php echo( $from_pr ); ?><?php } ?>
+				</td>
+			</tr>
+<?php if ( !empty( $meeting_content ) ) { ?>
+			<tr>
+				<td colspan="2" style="padding:2px;border-top: 1px solid #3366CC"><p>相談内容</p><p><?php echo( $meeting_content ); ?></p></td>
+			</tr>
+<?php } ?>
+		</table>
+		</center>
+	</div>
+
+<p>
+	<div style="padding: 2px; border-top: 1px solid #3366CC">
+		<center>
+			<font color="#676767" size="-2">&copy;2012&nbsp;<a href="<?php echo( $request_url ); ?>" target="_blank">Comeet</font>
+		</center>
+	</div>
+</p>
+</body>
+</html>

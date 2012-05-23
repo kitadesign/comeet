@@ -17,14 +17,15 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug(__METHOD__, 'Auth Error');
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
 
 		$targetMemberId = $self->getPostData( 'member_id' );
 		Logger::debug( __METHOD__, $targetMemberId );
 		if ( !Validate::isValidMemberId( $targetMemberId ) )
-			throw new Exception( 'Invalid member_id.' );
+			throw new RuntimeException( 'Invalid member_id.' );
 
+		// Meetを既読済みにかえる
 		$dao->updateActionLead( $memberId );
 
 		$profile      = $dao->getMemberProfileForDetail( $targetMemberId );
@@ -46,13 +47,17 @@ new AjaxController(function($self){
 			$self->setData( 'company_url', $company[0]->company_url );
 			$self->setData( 'company_tel', parseTel( $company[0]->company_tel ) );
 		}
-		$self->setData( 'has_profile_tags', ( empty( $profile_tags) ) ? 0 : 1 );
+		$self->setData( 'has_profile_tags', ( empty( $profile_tags ) ) ? 0 : 1 );
 		$self->setData( 'profile_tags', $profile_tags );
-		$self->setData( 'has_meeting_tags', ( empty( $meeting_tags) ) ? 0 : 1 );
+		$self->setData( 'has_meeting_tags', ( empty( $meeting_tags ) ) ? 0 : 1 );
 		$self->setData( 'meeting_tags', $meeting_tags );
 		$self->setData( 'is_like_member', ( empty( $toMemberIds ) ) ? 0 : 1 );
 		$self->setData( 'like_count', count( $toMemberIds ) );
 		$self->setData( 'like_member', $likeMembers );
+	} catch( RuntimeException $re ) {
+		Logger::debug( 'get_member_detail', $re->getMessage() );
+		$self->badRequestError();
+		return;
 	} catch ( Exception $e ) {
 		Logger::error( __METHOD__, $e->getMessage() );
 		throw $e;

@@ -19,16 +19,16 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug( 'set_profile', 'Auth Error' );
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
 		$profile = $self->getPostData( 'profile' );
 		Logger::debug( 'set_profile', $profile );
 
 		if ( isset( $profile['member_name'] ) ) {
 			if( !Validate::isValidMemberName( $profile['member_name'] ) )
-				throw new Exception( 'Param member_name is invalid['.$profile['member_name'].']' );
+				throw new RuntimeException( 'Param member_name is invalid['.$profile['member_name'].']' );
 
-			$res = $dao->updateMemberName( $memberId, $profile['member_name'] );
+			$res = $dao->updateMemberName( $memberId, trim( $profile['member_name'] ) );
 			if ( !$res ) throw new Exception( 'Update member_name error['.$profile['member_name'].']' );
 			$self->setData( 'member_name', $profile['member_name'] );
 			$updateFlag = true;
@@ -36,7 +36,7 @@ new AjaxController(function($self){
 
 		if ( isset( $profile['company_email_address'] ) ) {
 			if( !Validate::isValidCompanyEmailAddress( $profile['company_email_address'] ) )
-				throw new Exception( 'Param company_email_address is invalid['.$profile['company_email_address'].']' );
+				throw new RuntimeException( 'Param company_email_address is invalid['.$profile['company_email_address'].']' );
 
 			$res = $dao->updateCompanyEmailAddress( $memberId, $profile['company_email_address'] );
 			if ( !$res ) throw new Exception( 'Update company_email_address error['.$profile['company_email_address'].']' );
@@ -44,12 +44,12 @@ new AjaxController(function($self){
 			$updateFlag = true;
 		}
 
-		if ( isset( $profile['member_pr'] ) && $profile['member_pr'] == 'update' ) {
-			$fbUserProfile = $facebook->getUserInfo();
-			$memberPR = ( isset($fbUserProfile['bio'] ) ) ? $fbUserProfile['bio'] : '';
-			$res = $dao->updateMemberPR( $memberId, $memberPR );
-			if ( !$res ) throw new Exception( 'Update member_pr error['.$memberPR.']' );
-			$self->setData( 'member_pr', html( $memberPR ) );
+		if ( isset( $profile['member_pr'] ) ) {
+			if( !Validate::isValidMemberPR( $profile['member_pr'] ) )
+				throw new RuntimeException( 'Param member_pr is invalid['.$profile['member_pr'].']' );
+			$res = $dao->updateMemberPR( $memberId, trim( $profile['member_pr'] ) );
+			if ( !$res ) throw new Exception( 'Update member_pr error['.$profile['member_pr'].']' );
+			$self->setData( 'member_pr', html( $profile['member_pr'] ) );
 			$updateFlag = true;
 		}
 
@@ -65,7 +65,7 @@ new AjaxController(function($self){
 				$self->setData( 'profile_tags', $profileTags );
 				$updateFlag = true;
 			} else {
-				throw new Exception( 'ProfileTags are empty!' );
+				throw new RuntimeException( 'ProfileTags are empty!' );
 			}
 		}
 
@@ -76,13 +76,13 @@ new AjaxController(function($self){
 				if ( !$res ) throw new Exception( 'Update companyInfo error['.var_export($profile['company_info'],true).']' );
 
 				foreach ( $profile['company_info'] as $key => $companyInfo ){
-					$self->setData( 'company_name'.$key, $companyInfo['name'] );
-					$self->setData( 'company_url'.$key,  $companyInfo['url'] );
-					$self->setData( 'company_tel'.$key,  $companyInfo['tel'] );
+					$self->setData( 'company_name'.$key, trim( $companyInfo['name'] ) );
+					$self->setData( 'company_url'.$key,  trim( $companyInfo['url'] ) );
+					$self->setData( 'company_tel'.$key,  trim( $companyInfo['tel'] ) );
 				}
 				$updateFlag = true;
 			} else {
-				throw new Exception( 'CompanyInfo are empty!' );
+				throw new RuntimeException( 'CompanyInfo are empty!' );
 			}
 		}
 
@@ -97,7 +97,7 @@ new AjaxController(function($self){
 		return;
 	} catch( RuntimeException $re ) {
 		Logger::debug( 'set_profile', $re->getMessage() );
-		$self->setData( 'error', 'Input error.' );
+		$self->badRequestError();
 		return;
 	} catch( PDOException $pe ) {
 	} catch ( Exception $e ) {

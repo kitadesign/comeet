@@ -17,7 +17,7 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug( 'get_friends', 'Auth Error' );
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
 
 		$friends = $facebook->getFriends();
@@ -45,13 +45,13 @@ new AjaxController(function($self){
 		$memberLikes = $dao->getMemberLikeFromMe( $memberId );
 		foreach ( $memberLikes as $memberLike ) {
 			if ( empty( $memberLike->to_facebook_id ) ) {
-				$facebookId = $dao->getFacebookId( $memberLike );
+				$facebookId = $dao->getFacebookId( $memberLike->to_member_id );
 			} else {
 				$facebookId = $memberLike->to_facebook_id;
 			}
 			$friend = array(
 				'id'   => $facebookId,
-				'name' => $fbFriends[$facebookId]['name']
+				'name' => $fbFriends[$facebookId]['name'],
 			);
 			$myFrineds[] = $friend;
 		}
@@ -61,11 +61,17 @@ new AjaxController(function($self){
 				return ( $a['like_count'] < $b['like_count'] ) ? 1 : -1;
 			if ( isset( $a['member_id'] ) ) return -1;
 			if ( isset( $b['member_id'] ) ) return 1;
+			if ( $a['name'] < $b['name'] ) return -1;
+			if ( $a['name'] > $b['name'] ) return 1;
 			return 0;
 		} );
 
 		$self->setData( 'fb_friends', $fbFriends );
 		$self->setData( 'my_frineds', $myFrineds );
+	} catch( RuntimeException $re ) {
+		Logger::debug( 'get_friend', $re->getMessage() );
+		$self->badRequestError();
+		return;
 	} catch ( Exception $e ) {
 		Logger::error( 'get_friends', $e->getMessage() );
 		throw $e;

@@ -30,6 +30,7 @@ class MemberDAO extends LogDAO
 	const BIND_COMPANY_URL           = ':COMPANY_URL';
 	const BIND_COMPANY_TEL           = ':COMPANY_TEL';
 	const BIND_DENY_FLG              = ':DENY_FLG';
+	const BIND_MEET_CONTENT          = ':MEET_CONTENT';
 
 	/**
 	 * キャッシュ用キー
@@ -42,6 +43,10 @@ class MemberDAO extends LogDAO
 	const CACHE_KEY_TOTAL_COUNT           = 'M:TOTAL_COUNT';
 	const CACHE_KEY_MEETING_TAG           = 'M:MEETING_TAG:%s:%s';
 	const CACHE_KEY_PROFILE_TAG           = 'M:PROFILE_TAG:%s';
+	const CACHE_KEY_LIKE_MEMBER           = 'M:LIKE_MEMBER:%s';
+	const CACHE_KEY_RANKING_PROFILE_TAG   = 'M:RANKING:PROFILE_TAG';
+	const CACHE_KEY_RANKING_MEETING_TAG   = 'M:RANKING:MEETING_TAG';
+	const CACHE_KEY_COMPANY               = 'M:COMPANY:%s:%s';
 
 	/**
 	 * インスタンス変数
@@ -75,7 +80,6 @@ class MemberDAO extends LogDAO
 	public function getMemberId( $facebookId, $mode = 's' ) {
 		$cache = MemberCache::getInstance();
 		$memberId = $cache->get( sprintf( self::CACHE_KEY_MEMBER_ID, $facebookId ) );
-		Logger::debug( __METHOD__, $memberId );
 		if ( $memberId ) return $memberId;
 
 		$sql = 'SELECT member_id FROM member WHERE facebook_id = ' . self::BIND_FACEBOOK_ID . ';';
@@ -92,7 +96,6 @@ class MemberDAO extends LogDAO
 	public function getFacebookId ( $memberId ) {
 		$cache = MemberCache::getInstance();
 		$facebookId = $cache->get( sprintf( self::CACHE_KEY_FACEBOOK_ID, $memberId ) );
-		Logger::debug( __METHOD__, $facebookId );
 		if ( $facebookId ) return $facebookId;
 
 		$sql = 'SELECT facebook_id FROM member WHERE member_id = ' . self::BIND_MEMBER_ID . ';';
@@ -120,7 +123,6 @@ class MemberDAO extends LogDAO
 	public function getMemberLikeCountAll () {
 		$cache = MemberCache::getInstance();
 		$totalCount = $cache->get( self::CACHE_KEY_TOTAL_COUNT );
-		Logger::debug( __METHOD__, $totalCount );
 		if ( $totalCount ) return $totalCount;
 
 		$sql = 'SELECT COUNT(DISTINCT from_member_id) AS COUNT FROM member_like WHERE to_member_id <> 0;';
@@ -177,7 +179,6 @@ class MemberDAO extends LogDAO
 	public function getLocationIdByMemberId ( $memberId ) {
 		$cache = MemberCache::getInstance();
 		$locationIds = $cache->get( sprintf( self::CACHE_KEY_LOCATION_ID, $memberId ) );
-		Logger::debug( __METHOD__, $locationIds );
 		if ( $locationIds ) return $locationIds;
 
 		$sql = 'SELECT location_id FROM member_local WHERE member_id = ' . self::BIND_MEMBER_ID . ';';
@@ -197,7 +198,6 @@ class MemberDAO extends LogDAO
 	public function getProfileTag ( $memberId ) {
 		$cache = MemberCache::getInstance();
 		$profileTag = $cache->get( sprintf( self::CACHE_KEY_PROFILE_TAG, $memberId ) );
-		Logger::debug( __METHOD__, $profileTag );
 		if ( $profileTag ) return $profileTag;
 
 		$sql = 'SELECT tag_text FROM member_profile_tag WHERE member_id = ' . self::BIND_MEMBER_ID . ' ORDER BY key_number;';
@@ -217,7 +217,6 @@ class MemberDAO extends LogDAO
 	public function getMeetingTags ( $memberId, $enableFlag = false ) {
 		$cache = MemberCache::getInstance();
 		$meetingTag = $cache->get( sprintf( self::CACHE_KEY_MEETING_TAG, $memberId, ( $enableFlag ) ? 1 : 0 ) );
-		Logger::debug( __METHOD__, $meetingTag );
 		if ( $meetingTag ) return $meetingTag;
 
 		$plusWhere = '';
@@ -258,7 +257,6 @@ class MemberDAO extends LogDAO
 
 		$cache = MemberCache::getInstance();
 		$profile = $cache->get( sprintf( self::CACHE_KEY_PROFILE, $memberId ) );
-		Logger::debug( __METHOD__, $profile );
 		if ( $profile ) return $profile;
 
 		$sql = 'SELECT member_id, member_name, company_email_address, member_pr, mtg_profile FROM member_profile WHERE member_id = ' . self::BIND_MEMBER_ID . ';';
@@ -274,9 +272,19 @@ class MemberDAO extends LogDAO
 	 */
 	public function getMemberCompanyForDetail ( $memberId, $priority ) {
 		if( !is_array( $priority ) || empty( $priority ) ) return array();
+
+		$cache = MemberCache::getInstance();
+		if ( isset( $priority[0] ) && $priority[0] === 0 ) {
+			$profile = $cache->get( sprintf( self::CACHE_KEY_COMPANY, $memberId, 0 ) );
+			if ( $profile ) return $profile;
+		}
+
 		$sql = 'SELECT priority, company_name, company_url, company_tel FROM member_company WHERE member_id = ' . self::BIND_MEMBER_ID . ' AND priority IN ('.implode( ',', $priority ).') ORDER BY priority;';
 		$res = $this->queryAll( $sql, array( self::BIND_MEMBER_ID => $memberId ) );
 		if ( empty( $res ) ) return array();
+
+		if ( isset( $priority[0] ) && $priority[0] === 0 )
+			$cache->set( sprintf( self::CACHE_KEY_COMPANY, $memberId, 0 ), $res );
 		return $res;
 	}
 
@@ -296,9 +304,15 @@ class MemberDAO extends LogDAO
 	 * 推奨している取締役一覧を取得する
 	 */
 	public function getMemberLikeFromMe ( $memberId ) {
+		$cache = MemberCache::getInstance();
+		$likeMembers = $cache->get( sprintf( self::CACHE_KEY_LIKE_MEMBER, $memberId ) );
+		if ( $likeMembers ) return $likeMembers;
+
 		$sql = 'SELECT to_member_id, to_facebook_id FROM member_like WHERE from_member_id = ' . self::BIND_FROM_MEMBER_ID . ';';
 		$res = $this->queryAll( $sql, array( self::BIND_FROM_MEMBER_ID => $memberId ) );
 		if ( empty( $res ) ) return array();
+
+		$cache->set( sprintf( self::CACHE_KEY_LIKE_MEMBER, $memberId ), $res );
 		return $res;
 	}
 
@@ -315,7 +329,39 @@ class MemberDAO extends LogDAO
 	}
 
 	/**
-	 * MeetFeedを取得する
+	 * 専門分野ランキング（プロフィールタグ）
+	 */
+	public function getRankingOfProfileTag () {
+		$cache = MemberCache::getInstance();
+		$ranking = $cache->get( self::CACHE_KEY_RANKING_PROFILE_TAG );
+		if ( $ranking ) return $ranking;
+
+		$sql = 'SELECT COUNT(member_id) AS COUNT, tag_text FROM member_profile_tag GROUP BY tag_text ORDER BY COUNT(member_id) DESC LIMIT 0, 100;';
+		$res = $this->queryAll( $sql );
+		if ( empty( $res ) ) return array();
+
+		$cache->set( self::CACHE_KEY_RANKING_PROFILE_TAG, $res );
+		return $res;
+	}
+
+	/**
+	 * 相談タグランキング
+	 */
+	public function getRankingOfMeetingTag () {
+		$cache = MemberCache::getInstance();
+		$ranking = $cache->get( self::CACHE_KEY_RANKING_MEETING_TAG );
+		if ( $ranking ) return $ranking;
+
+		$sql = 'SELECT COUNT(member_id) AS COUNT, tag_text FROM member_mtg_tag GROUP BY tag_text ORDER BY COUNT(member_id) DESC LIMIT 0, 100;';
+		$res = $this->queryAll( $sql );
+		if ( empty( $res ) ) return array();
+
+		$cache->set( self::CACHE_KEY_RANKING_MEETING_TAG, $res );
+		return $res;
+	}
+
+	/**
+	 * MeetFeedを取得する (最大100件)
 	 * @params Int $memberId
 	 * @params Int $type
 	 */
@@ -327,12 +373,22 @@ class MemberDAO extends LogDAO
 		if ( empty( $meetingTag ) ) return array();
 		if ( is_array( $meetingTag ) ) return array();
 
-		$sql = 'SELECT DISTINCT member_id FROM member_profile_tag WHERE tag_text = '.self::BIND_TAG_TEXT.';';
-		$profileTagInfos = $this->queryAll( $sql, array( self::BIND_TAG_TEXT => $meetingTag->tag_text ) );
-		if ( empty( $profileTagInfos ) ) return array();
-		$profileTagMember = array();
-		foreach ( $profileTagInfos as $profileTagInfo )
-			$profileTagMember[$profileTagInfo->member_id] = $profileTagInfo->member_id;
+		$tagInfos = array();
+		switch ( $type ) {
+			case 0:
+				$sql = 'SELECT DISTINCT member_id FROM member_profile_tag WHERE tag_text = '.self::BIND_TAG_TEXT.';';
+				$tagInfos = $this->queryAll( $sql, array( self::BIND_TAG_TEXT => $meetingTag->tag_text ) );
+				break;
+			case 1:
+				$sql = 'SELECT DISTINCT member_id FROM member_mtg_tag WHERE tag_text = '.self::BIND_TAG_TEXT.';';
+				$tagInfos = $this->queryAll( $sql, array( self::BIND_TAG_TEXT => $meetingTag->tag_text ) );
+				break;
+		}
+		if ( empty( $tagInfos ) ) return array();
+
+		$tagMember = array();
+		foreach ( $tagInfos as $tagInfo )
+			$tagMember[$tagInfo->member_id] = $tagInfo->member_id;
 
 		$sql = 'SELECT DISTINCT member_id FROM member_local WHERE location_id IN ('.implode( ',', $locationIds ).');';
 		$localInfos = $this->queryAll( $sql );
@@ -340,7 +396,7 @@ class MemberDAO extends LogDAO
 
 		$meetMembers = array();
 		foreach ( $localInfos as $localInfo ) {
-			if ( isset( $profileTagMember[$localInfo->member_id] ) ) $meetMembers[] = $localInfo->member_id;
+			if ( isset( $tagMember[$localInfo->member_id] ) ) $meetMembers[] = $localInfo->member_id;
 		}
 		if ( empty( $meetMembers ) ) return array();
 
@@ -349,10 +405,13 @@ class MemberDAO extends LogDAO
 		if ( empty( $likeInfos ) ) return array();
 
 		$meetLikeMemberIds = array();
-		foreach ( $likeInfos as $likeInfo ) $meetLikeMemberIds[] = $likeInfo->to_member_id;
+		foreach ( $likeInfos as $likeInfo ) {
+			if ( count( $meetLikeMemberIds ) > 100 ) break;
+			$meetLikeMemberIds[] = $likeInfo->to_member_id;
+		}
+
 		$profiles = $this->getMemberProfileForList( $meetLikeMemberIds );
 		$memberLikes = $this->getMemberLikeCountByMemberIds( $meetLikeMemberIds );
-		$profileTags = $this->getProfileTag( $memberId );
 		$meetNows = $this->getMeetNowMemberCount( $memberId );
 
 		$meetFeed = array();
@@ -360,6 +419,7 @@ class MemberDAO extends LogDAO
 			if ( $profile->member_id === $memberId ) {
 				continue;
 			}
+			$profileTags = $this->getProfileTag( $profile->member_id );
 			$meetFeed[] = array(
 				'member_id'    => $profile->member_id,
 				'icon'         => sprintf( Conf::FACEBOOK_IMAGE_URL_S, $this->getFacebookId( $profile->member_id ) ),
@@ -370,6 +430,14 @@ class MemberDAO extends LogDAO
 				'meet_now'     => ( isset($meetNows[$profile->member_id]) ) ? 1 : 0,
 			);
 		}
+
+		usort( $meetFeed, function ( $a, $b ) {
+			if ( $a['like_count'] < $b['like_count'] ) return 1;
+			if ( $a['like_count'] > $b['like_count'] ) return -1;
+			if ( $a['member_name'] < $b['member_name'] ) return 1;
+			if ( $a['member_name'] > $b['member_name'] ) return -1;
+			return 0;
+		} );
 		return $meetFeed;
 	}
 
@@ -400,6 +468,14 @@ class MemberDAO extends LogDAO
 				'meet_now'     => ( isset($meetNows[$profile->member_id]) ) ? 1 : 0,
 			);
 		}
+
+		usort( $meetFeed, function ( $a, $b ) {
+			if ( $a['like_count'] < $b['like_count'] ) return 1;
+			if ( $a['like_count'] > $b['like_count'] ) return -1;
+			if ( $a['member_name'] < $b['member_name'] ) return 1;
+			if ( $a['member_name'] > $b['member_name'] ) return -1;
+			return 0;
+		} );
 		return $meetFeed;
 	}
 }

@@ -20,7 +20,8 @@ new PageController(function($self){
 					$facebook->getAccessToken(),
 					( isset($fbUserProfile['locale'] ) ) ? $fbUserProfile['locale'] : '',
 					( isset($fbUserProfile['name'] ) )   ? $fbUserProfile['name']   : '',
-					( isset($fbUserProfile['bio'] ) )    ? $fbUserProfile['bio']    : ''
+					( isset($fbUserProfile['bio'] ) )    ? $fbUserProfile['bio']    : '',
+					( isset($fbUserProfile['email'] ) )  ? $fbUserProfile['email']  : ''
 				);
 			}
 			$self->redirect('/');

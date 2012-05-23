@@ -17,12 +17,12 @@ new AjaxController(function($self){
 
 		if ( !$self->isValidCall( 'memberId', $memberId ) ) {
 			Logger::debug(__METHOD__, 'Auth Error');
-			throw new Exception( 'Invalid call!' );
+			throw new RuntimeException( 'Invalid call!' );
 		}
 		$locationId = $self->getPostData( 'location_id' );
 		Logger::debug(__METHOD__, $locationId);
 		if ( !Validate::isValidLocationId( $locationId ) )
-			throw new Exception( 'Param locationId is invalid['.$locationId.']' );
+			throw new RuntimeException( 'Param locationId is invalid['.$locationId.']' );
 
 		$res = $dao->createMemberLocal( $memberId, $locationId );
 		if ( !$res ) throw new Exception( 'Create location error['.$locationId.']' );
@@ -33,7 +33,7 @@ new AjaxController(function($self){
 		return;
 	} catch( RuntimeException $re ) {
 		Logger::debug( 'set_profile', $re->getMessage() );
-		$self->setData( 'error', 'Input error.' );
+		$self->badRequestError();
 		return;
 	} catch( PDOException $e ) {
 	} catch ( Exception $e ) {

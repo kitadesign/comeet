@@ -25,7 +25,7 @@ class MemberUpdateDAO extends MemberDAO
 	/**
 	 * Facebookユーザを元に新規メンバーを登録する
 	 */
-	public function createMemberByFacebookId ( $facebookId, $facebookAccessToken, $language, $memberName, $memberPR ) {
+	public function createMemberByFacebookId ( $facebookId, $facebookAccessToken, $language, $memberName, $memberPR, $companyEmailAddress ) {
 		try {
 			$this->begin();
 			$sql = 'INSERT INTO member SET `facebook_id` = ' . self::BIND_FACEBOOK_ID . ', `facebook_access_token` = ' . self::BIND_FACEBOOK_ACCESS_TOKEN . ', `language` = ' . self::BIND_LANGUAGE . ', `create_at` = CURRENT_TIMESTAMP;';
@@ -37,11 +37,12 @@ class MemberUpdateDAO extends MemberDAO
 
 			$memberId = $this->getMemberId( $facebookId, 'm' );
 
-			$sql = 'INSERT INTO member_profile SET `member_id` = ' . self::BIND_MEMBER_ID . ', `member_name` = ' . self::BIND_MEMBER_NAME . ', `member_pr` = ' . self::BIND_MEMBER_PR . ';';
+			$sql = 'INSERT INTO member_profile SET `member_id` = ' . self::BIND_MEMBER_ID . ', `member_name` = ' . self::BIND_MEMBER_NAME . ', `member_pr` = ' . self::BIND_MEMBER_PR . ', `company_email_address` = ' . self::BIND_COMPANY_EMAIL_ADDRESS . ';';
 			$this->update( $sql, array(
-				self::BIND_MEMBER_ID   => $memberId,
-				self::BIND_MEMBER_NAME => $memberName,
-				self::BIND_MEMBER_PR   => $memberPR,
+				self::BIND_MEMBER_ID             => $memberId,
+				self::BIND_MEMBER_NAME           => $memberName,
+				self::BIND_MEMBER_PR             => $memberPR,
+				self::BIND_COMPANY_EMAIL_ADDRESS => $companyEmailAddress,
 			) );
 
 			$sql = 'UPDATE member_like SET `to_member_id` = ' . self::BIND_TO_MEMBER_ID . ' WHERE `to_facebook_id` = ' . self::BIND_TO_FACEBOOK_ID . ';';
@@ -51,6 +52,10 @@ class MemberUpdateDAO extends MemberDAO
 			) );
 
 			$this->commit();
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_LIKE_MEMBER, $memberId ) );
+
 			return true;
 		} catch ( PDOException $e ) {
 			$this->rollback();
@@ -182,6 +187,10 @@ class MemberUpdateDAO extends MemberDAO
 				) );
 			}
 			$this->commit();
+
+			$cache = MemberCache::getInstance();
+			$cache->remove( sprintf( self::CACHE_KEY_LIKE_MEMBER, $memberId ) );
+
 			return true;
 		} catch ( PDOException $e ) {
 			$this->rollback();
@@ -287,6 +296,7 @@ class MemberUpdateDAO extends MemberDAO
 					self::BIND_COMPANY_URL  => $companyInfo['url'],
 					self::BIND_COMPANY_TEL  => $companyInfo['tel'],
 				) );
+				$cache->remove( sprintf( self::CACHE_KEY_COMPANY, $memberId, $key ) );
 			}
 			$this->commit();
 
@@ -300,12 +310,13 @@ class MemberUpdateDAO extends MemberDAO
 	/**
 	 * すぐにボタン押下登録
 	 */
-	public function createActionNow ( $fromMemberId, $toMemberId, $denyFlg ) {
+	public function createActionNow ( $fromMemberId, $toMemberId, $meetText, $denyFlg ) {
 		try {
-			$sql = 'INSERT INTO action_now_history SET `from_member_id` = ' . self::BIND_FROM_MEMBER_ID . ', `to_member_id` = ' . self::BIND_TO_MEMBER_ID . ', `action_at` = CURRENT_TIMESTAMP, `read_flg` = 0, `deny_flg` = ' . self::BIND_DENY_FLG . ';';
+			$sql = 'INSERT INTO action_now_history SET `from_member_id` = ' . self::BIND_FROM_MEMBER_ID . ', `to_member_id` = ' . self::BIND_TO_MEMBER_ID . ', `meet_content` = ' . self::BIND_MEET_CONTENT . ', `action_at` = CURRENT_TIMESTAMP, `read_flg` = 0, `deny_flg` = ' . self::BIND_DENY_FLG . ';';
 			$this->update( $sql, array(
 				self::BIND_FROM_MEMBER_ID => $fromMemberId,
 				self::BIND_TO_MEMBER_ID   => $toMemberId,
+				self::BIND_MEET_CONTENT   => $meetText,
 				self::BIND_DENY_FLG       => $denyFlg,
 			) );
 			return true;

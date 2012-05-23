@@ -41,6 +41,9 @@ function isMatchSignature ( $name, $base, $signature ) {
  * TELを数字のみからハイフン入りに変える
  */
 function parseTel( $tel ) {
+
+	if ( strpos( $tel, '-' ) !== false ) return $tel;
+
 	$ex_list = array(
 		'09969','09913','09912','09802','09496',
 		'08636','08514','08512','08477','08396',

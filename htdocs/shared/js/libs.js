@@ -103,7 +103,7 @@ function getTextArea ( text, rows, cols ) {
 }
 
 function redirect ( url ) {
-	window.location.href = url;
+	window.location.replace( url );
 }
 
 function defineClass () {

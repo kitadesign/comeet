@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>【C3】 | Comeet Cache Checker</title>
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" href="/shared/css/reset.css" media="all">
+<style type="text/css">
+h1 {
+	color: #F00;
+	margin: 10px auto;
+	font-size: 20px;
+	font-waight: bold;
+}
+h2 {
+	margin: 10px auto;
+}
+div.cacheSearch {
+	width: 300px;
+	margin: 10px auto;
+}
+div.cacheSearch form div.input {
+	float: left;
+	width: 220px;
+	margin: 0 auto;
+}
+div.cacheSearch form div.input input {
+	width: 150px;
+}
+div.cacheSearch form div.submit {
+	float: right;
+	width: 80px;
+	margin: 0 auto;
+	padding-top: 3px;
+}
+div.cacheSearch form div.submit input {
+	width: 80px;
+}
+table.cacheTable {
+	margin: 0 auto;
+	width: 80%;
+	border: 1px solid #000;
+}
+table.cacheTable tr td{
+	padding: 10px;
+}
+</style>
+</head>
+<body align="center">
+<h1>【C3】 | Comeet Cache Checker</h1>
+<h2>Comeetのキャッシュ情報を確認・削除できるツールです</h2>
+<div class="cacheSearch clearfix">
+	<form action="./c3.php" method="post"><input type="hidden" name="type" value="search" />
+		<div class="input">Key : <input type="text" name="cacheName" value="<?php echo($cacheName); ?>" /></div>
+		<div class="submit"><input type="submit" name="submit" value="検索" /></div>
+	</form>
+</div>
+<?php if ( $cacheName ) { ?>
+<table class="cacheTable">
+	<tr>
+		<td class="cacheName"><?php echo( $cacheName ); ?></td>
+		<td class="cacheValue" align="left"><pre><?php echo( $cacheValue ); ?></pre></td>
+		<td class="delete">
+			<form action="./c3.php" method="post"><input type="hidden" name="type" value="delete" />
+				<input type="hidden" name="cacheName" value="<?php echo($cacheName); ?>" />
+				<input type="submit" name="submit" value="削除する" />
+			</form>
+		</td>
+<!--		<td class="edit"></td>-->
+	</tr>
+</table>
+<?php } ?>
+</body>
+</html>
