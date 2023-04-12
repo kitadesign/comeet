@@ -8,17 +8,17 @@ class Conf
 	/**
 	 * システムが参照するFacebookアプリID
 	 */
-	const FACEBOOK_APP_ID = '290024314417743';
+	const FACEBOOK_APP_ID = '***';
 	
 	/**
 	 * システムが参照するFacebookアプリシークレット
 	 */
-	const FACEBOOK_APP_SECRET = '9de276768fb860fd389eabff6e1061f1';
+	const FACEBOOK_APP_SECRET = '******';
 
 	/**
 	 * シグネチャのソルト
 	 */
-	const SIGNATURE_SOLT = 'MJ4MGRQCuofP9YMr';
+	const SIGNATURE_SOLT = '*********';
 
 	const JA_EDIT_BUTTON           = '編集';
 	const JA_SAVE_BUTTON           = '保存';
@@ -42,8 +42,8 @@ class Conf
 	const MEMBER_DB_MST_DSN = 'mysql:dbname=comeet;host=localhost';
 	const MEMBER_DB_BAK_DSN = 'mysql:dbname=comeet;host=localhost';
 	const MEMBER_DB_SLV_DSN = 'mysql:dbname=comeet;host=localhost';
-	const MEMBER_DB_USER    = 'comeet';
-	const MEMBER_DB_PSWD    = 'pESg1LGM';
+	const MEMBER_DB_USER    = '*********';
+	const MEMBER_DB_PSWD    = '*********';
 
 	const FACEBOOK_ID_NODE     = 'facebook-id';
 	const FACEBOOK_IMAGE_URL_S = '//graph.facebook.com/%s/picture?type=square';
